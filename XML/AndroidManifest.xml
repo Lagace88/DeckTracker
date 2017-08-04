@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.tyler.hearthstonedecktracker">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="Deck Tracker Pro"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".Intro"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Options"
+            android:screenOrientation="portrait" />
+        <activity android:name=".Background"
+            android:screenOrientation="portrait" />
+        <activity android:name=".UserDeckDisplay"
+            android:screenOrientation="portrait" />
+        <activity android:name=".AddDeck"
+            android:screenOrientation="portrait" />
+        <activity android:name=".ColorSelection"
+            android:screenOrientation="portrait" />
+        <activity android:name=".MainDisplay"
+            android:screenOrientation="portrait" />
+        <activity android:name=".WinLoss"
+            android:screenOrientation="portrait" />
+        <activity android:name=".FDOptions"
+            android:screenOrientation="portrait" />
+        <activity android:name=".ChangeName"
+            android:windowSoftInputMode="stateVisible"
+            android:screenOrientation="portrait" />
+    </application>
+
+</manifest>
