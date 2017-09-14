@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/background_dark">
+
+    <TextView
+        android:id="@+id/rextOptions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:text="Options"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="60dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/txt_RecommendedBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rextOptions"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="23dp"
+        android:text="Part Game Capacity : 1 - 100"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="20dp" />
+
+    <EditText
+        android:id="@+id/editPastRecommended"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txt_RecommendedBack"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:background="@android:color/darker_gray"
+        android:editable="true"
+        android:ems="10"
+        android:inputType="number"
+        android:textAlignment="center"
+        android:textSize="30sp" />
+
+    <Button
+        android:id="@+id/btnCredits"
+        android:layout_width="290dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editPastRecommended"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_marginTop="18dp"
+        android:width="350dp"
+        android:text="Credits"
+        android:textSize="30dp" />
+
+    <Button
+        android:id="@+id/btnBack"
+        android:layout_width="290dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/btnCredits"
+        android:layout_alignStart="@+id/btnCredits"
+        android:layout_below="@+id/btnCredits"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_marginTop="15dp"
+        android:width="350dp"
+        android:text="Back"
+        android:textSize="30dp" />
+
+</RelativeLayout>

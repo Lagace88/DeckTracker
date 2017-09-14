@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/txtFacedDeckName"
+        android:layout_width="700dp"
+        android:layout_height="100dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="5dp"
+        android:gravity="center"
+        android:text="TextView"
+        android:textAlignment="center"
+        android:textSize="20dp" />
+
+    <TextView
+        android:id="@+id/txtWinRate"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_alignTop="@+id/txtFacedDeckName"
+        android:layout_marginRight="20dp"
+        android:layout_toEndOf="@+id/txtFacedDeckName"
+        android:layout_toRightOf="@+id/txtFacedDeckName"
+        android:gravity="center"
+        android:text="50%"
+        android:textAlignment="center"
+        android:textSize="50dp" />
+
+</RelativeLayout>

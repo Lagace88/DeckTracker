@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/black">
+
+    <TextView
+        android:id="@+id/txtCurrentRecomend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:text="Currently Playing"
+        android:textAlignment="center"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="40dp" />
+
+    <TextView
+        android:id="@+id/txtCurrentDeck"
+        android:layout_width="400dp"
+        android:layout_height="100dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/txtCurrentRecomend"
+        android:layout_toLeftOf="@+id/txt_CurrentDeckWinRate"
+        android:clickable="true"
+        android:gravity="center"
+        android:text="TextView"
+        android:textAlignment="center"
+        android:textSize="30sp" />
+
+    <TextView
+        android:id="@+id/txtFacedDecks"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtCurrentDeck"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:text="Faced Decks"
+        android:textAlignment="center"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="65dp" />
+
+    <ListView
+        android:id="@+id/facedDecks"
+        android:layout_width="match_parent"
+        android:layout_height="700dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/txtFacedDecks" />
+
+    <Button
+        android:id="@+id/btnAddDeck"
+        android:layout_width="200dp"
+        android:layout_height="80dp"
+        android:layout_below="@+id/facedDecks"
+        android:layout_marginTop="35dp"
+        android:layout_toLeftOf="@+id/txtFacedDecks"
+        android:layout_toStartOf="@+id/txtFacedDecks"
+        android:text="Add Deck"
+        android:textSize="30dp" />
+
+    <Button
+        android:id="@+id/btnBack"
+        android:layout_width="200dp"
+        android:layout_height="80dp"
+        android:layout_below="@+id/facedDecks"
+        android:layout_marginTop="35dp"
+        android:layout_toEndOf="@+id/txtFacedDecks"
+        android:layout_toRightOf="@+id/txtFacedDecks"
+        android:text="Back"
+        android:textSize="30dp" />
+
+    <Button
+        android:id="@+id/btnUserDeckOptions"
+        android:layout_width="200dp"
+        android:layout_height="80dp"
+        android:layout_below="@+id/facedDecks"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="35dp"
+        android:text="Options"
+        android:textSize="30dp" />
+
+    <TextView
+        android:id="@+id/txt_CurrentDeckWinRate"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_above="@+id/txtFacedDecks"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_toEndOf="@+id/txtCurrentRecomend"
+        android:layout_toRightOf="@+id/txtCurrentRecomend"
+        android:gravity="center"
+        android:text="TextView"
+        android:textAlignment="center"
+        android:textSize="50dp" />
+
+</RelativeLayout>

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/FDORel"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/background_dark">
+
+    <TextView
+        android:id="@+id/txt_FDODeck"
+        android:layout_width="775dp"
+        android:layout_height="120dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="17dp"
+        android:gravity="center"
+        android:text="Deck"
+        android:textAlignment="center"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="70dp" />
+
+    <Button
+        android:id="@+id/btn_ChangeName"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_below="@+id/txt_FDODeck"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="70dp"
+        android:layout_marginRight="70dp"
+        android:layout_marginTop="50dp"
+        android:text="Change Deck Name"
+        android:textSize="55dp" />
+
+    <Button
+        android:id="@+id/btn_ChangeTextColor"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_below="@+id/btn_ChangeName"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="70dp"
+        android:layout_marginRight="70dp"
+        android:layout_marginTop="50dp"
+        android:text="Change Text Color"
+        android:textSize="55dp" />
+
+    <Button
+        android:id="@+id/btn_ChangeBackgroundColor"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/btn_ChangeTextColor"
+        android:layout_marginLeft="70dp"
+        android:layout_marginRight="70dp"
+        android:layout_marginTop="50dp"
+        android:text="Change Backgrround Color"
+        android:textSize="55dp" />
+
+    <Button
+        android:id="@+id/btn_DeletePastWinLoss"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/btn_ChangeBackgroundColor"
+        android:layout_marginLeft="70dp"
+        android:layout_marginRight="70dp"
+        android:layout_marginTop="50dp"
+        android:text="Delete Past Win Loss Ratio"
+        android:textSize="55dp" />
+
+    <Button
+        android:id="@+id/btn_DeleteDeck"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/btn_DeletePastWinLoss"
+        android:layout_marginLeft="70dp"
+        android:layout_marginRight="70dp"
+        android:layout_marginTop="50dp"
+        android:text="Delete Deck"
+        android:textSize="55dp" />
+
+    <Button
+        android:id="@+id/btn_Back"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_below="@+id/btn_DeleteDeck"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="70dp"
+        android:layout_marginRight="70dp"
+        android:layout_marginTop="50dp"
+        android:text="Back"
+        android:textSize="55dp" />
+</RelativeLayout>

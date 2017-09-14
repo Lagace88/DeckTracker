@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/black">
+
+    <TextView
+        android:id="@+id/txt_FacedDeck"
+        android:layout_width="325dp"
+        android:layout_height="60dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="21dp"
+        android:gravity="center"
+        android:text="Faced Deck"
+        android:textAlignment="center"
+        android:textColor="@android:color/background_light"
+        android:textSize="50dp"
+        tools:text="Test" />
+
+    <Button
+        android:id="@+id/btn_Win"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/txt_FacedDeck"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="20dp"
+        android:text="Win"
+        android:textSize="30dp" />
+
+    <Button
+        android:id="@+id/btn_Loss"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/txt_FacedDeck"
+        android:layout_marginRight="50dp"
+        android:layout_marginTop="20dp"
+        android:text="Loss"
+        android:textAlignment="center"
+        android:textSize="30dp" />
+
+    <Button
+        android:id="@+id/btn_Options"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/btn_Win"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginTop="20dp"
+        android:text="Options"
+        android:textSize="30dp" />
+
+    <Button
+        android:id="@+id/btn_Back"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/btn_Options"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginTop="20dp"
+        android:layout_toEndOf="@+id/btn_Win"
+        android:text="Back"
+        android:textSize="30dp" />
+
+    <TextView
+        android:id="@+id/txt_TimesFaced"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/btn_Back"
+        android:layout_alignStart="@+id/btn_Back"
+        android:layout_below="@+id/btn_Back"
+        android:layout_marginTop="20dp"
+        android:text="Times Faced:"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="25dp" />
+
+    <TextView
+        android:id="@+id/txt_Wins"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/txt_TimesFaced"
+        android:layout_alignStart="@+id/txt_TimesFaced"
+        android:layout_below="@+id/txt_TimesFaced"
+        android:layout_marginTop="20dp"
+        android:text="Wins:"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="25dp" />
+
+    <TextView
+        android:id="@+id/txt_Loses"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/txt_TimesFaced"
+        android:layout_alignStart="@+id/txt_TimesFaced"
+        android:layout_below="@+id/txt_Wins"
+        android:layout_marginTop="20dp"
+        android:text="Loses:"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="25dp" />
+
+    <TextView
+        android:id="@+id/txt_WinRate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/txt_TimesFaced"
+        android:layout_alignStart="@+id/txt_TimesFaced"
+        android:layout_below="@+id/txt_Loses"
+        android:layout_marginTop="20dp"
+        android:text="Win Rate:"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="25dp" />
+
+    <TextView
+        android:id="@+id/result_TimesFaced"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/btn_Back"
+        android:layout_alignRight="@+id/btn_Back"
+        android:layout_alignTop="@+id/txt_TimesFaced"
+        android:text="0"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="25dp" />
+
+    <TextView
+        android:id="@+id/result_Wins"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="25dp"
+        android:layout_above="@+id/txt_Loses"
+        android:layout_alignLeft="@+id/result_TimesFaced"
+        android:layout_alignStart="@+id/result_TimesFaced" />
+
+    <TextView
+        android:id="@+id/result_Loses"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="25dp"
+        android:layout_above="@+id/txt_WinRate"
+        android:layout_alignLeft="@+id/result_Wins"
+        android:layout_alignStart="@+id/result_Wins" />
+
+    <TextView
+        android:id="@+id/result_WinRate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/txt_WinRate"
+        android:layout_alignBottom="@+id/txt_WinRate"
+        android:layout_alignEnd="@+id/result_Loses"
+        android:layout_alignRight="@+id/result_Loses"
+        android:text="50%"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="25dp" />
+
+</RelativeLayout>
