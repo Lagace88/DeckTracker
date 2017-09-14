@@ -1,7 +1,8 @@
-package com.example.tyler.hearthstonedecktracker;
+package com.tool.dirtytgaming.decktrackerpro;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -36,7 +37,7 @@ public class WinLoss extends Activity {
         Back.setOnClickListener(toggleBack);
 
         // Populate Current Deck
-        UserDeck = getIntent().getStringExtra("USERDECKNAME");
+        UserDeck = getIntent().getStringExtra("UserDeckName");
         UserDeck = "[" + UserDeck + "]";
         Position = getIntent().getIntExtra("Position", 0);
         UserPosition = getIntent().getIntExtra("UserPosition", 0);
@@ -69,17 +70,56 @@ public class WinLoss extends Activity {
         DisplayDeckName.setTextColor(Color.parseColor(cOne.getString(cOne.getColumnIndexOrThrow("textcolor"))));
         DisplayDeckName.setBackgroundColor(Color.parseColor(cOne.getString(cOne.getColumnIndexOrThrow("bgcolor"))));
 
-        // Set appropriate text.
-        if (Name.length() <= 10) {
-            DisplayDeckName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30);
-        } else if (Name.length() <= 17) {
-            DisplayDeckName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
-        } else if (Name.length() <= 28) {
-            DisplayDeckName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
+        // Set text size for DisplayDeckName
+        Configuration configuration = this.getResources().getConfiguration();
+        int screenWidthDp = configuration.screenWidthDp;
+
+        if (screenWidthDp <= 359) {
+            if (Name.length() <= 10) {
+                DisplayDeckName.setTextSize(30);
+            } else if (Name.length() <= 17) {
+                DisplayDeckName.setTextSize(18);
+            } else if (Name.length() <= 28) {
+                DisplayDeckName.setTextSize(11);
+            }
+        } else if (screenWidthDp <= 400) {
+            if (Name.length() <= 10) {
+                DisplayDeckName.setTextSize(35);
+            } else if (Name.length() <= 17) {
+                DisplayDeckName.setTextSize(21);
+            } else if (Name.length() <= 28) {
+                DisplayDeckName.setTextSize(12);
+            }
+        } else if (screenWidthDp <= 599) {
+            if (Name.length() <= 10) {
+                DisplayDeckName.setTextSize(40);
+            } else if (Name.length() <= 17) {
+                DisplayDeckName.setTextSize(24);
+            } else if (Name.length() <= 28) {
+                DisplayDeckName.setTextSize(15);
+            }
+        } else if (screenWidthDp <= 719) {
+            if (Name.length() <= 10) {
+                DisplayDeckName.setTextSize(52);
+            } else if (Name.length() <= 17) {
+                DisplayDeckName.setTextSize(31);
+            } else if (Name.length() <= 28) {
+                DisplayDeckName.setTextSize(20);
+            }
+        } else {
+            if (Name.length() <= 10) {
+                DisplayDeckName.setTextSize(61);
+            } else if (Name.length() <= 17) {
+                DisplayDeckName.setTextSize(36);
+            } else if (Name.length() <= 28) {
+                DisplayDeckName.setTextSize(27);
+            }
         }
+
 
         Cursor cTwo = db.getRow(Position, UserDeck, 2);
         db.close();
+
         int wins = cTwo.getInt(cTwo.getColumnIndexOrThrow("wins"));
         int losses = cTwo.getInt(cTwo.getColumnIndexOrThrow("losses"));
 
@@ -94,6 +134,9 @@ public class WinLoss extends Activity {
             winRate = Math.round(winRate);
             WinRate.setText(String.format("%.0f", winRate) + "%");
         }
+
+        UserDeck = getIntent().getStringExtra("UserDeckName");
+        UserPosition = getIntent().getIntExtra("UserPosition", 0);
     }
 
     private final View.OnClickListener toggleWin =
@@ -168,7 +211,7 @@ public class WinLoss extends Activity {
             db.addToRecommended(Position, RecommendedCursor.getCount());
 
             // Check to see if there is left over space.
-        } else if (RecommendedCursor.getCount() <= 500) {
+        } else if (RecommendedCursor.getCount() <= 100) {
             // Move RecommendedCursor to Position before flag.
             RecommendedCursor.moveToPosition(RecommendedCursor.getCount() - 2);
 
@@ -209,7 +252,7 @@ public class WinLoss extends Activity {
                 db.updateRecommended(Position, RecommendedCursor.getCount() - counter);
             } else {
                 RecommendedCursor.moveToPosition(1);
-                for (int x = 1; x < 501; x++) {
+                for (int x = 1; x < 101; x++) {
                     db.updateRecommended(RecommendedCursor.getInt(RecommendedCursor.getColumnIndexOrThrow("deck")), x);
                     RecommendedCursor.moveToNext();
                 }
@@ -229,7 +272,7 @@ public class WinLoss extends Activity {
                     // Start Options Activity
                     Intent intent = new Intent(WinLoss.this, FDOptions.class);
                     intent.putExtra("Position", Position);
-                    intent.putExtra("UserDeck", UserDeck);
+                    intent.putExtra("UserDeckName", UserDeck);
                     intent.putExtra("UserPosition", UserPosition);
                     startActivityForResult(intent, 1);
                 }

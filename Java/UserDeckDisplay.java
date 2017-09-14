@@ -1,21 +1,24 @@
-package com.example.tyler.hearthstonedecktracker;
+package com.tool.dirtytgaming.decktrackerpro;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import static android.graphics.Color.parseColor;
 
 public class UserDeckDisplay extends Activity {
     DBAdapter db;
     ListView decks;
     ListViewCustomAdapterUserDecks adapter;
+    int pastRecommended;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,35 +68,53 @@ public class UserDeckDisplay extends Activity {
 
 
     private void populateListView() {
+        SharedPreferences sP = getApplicationContext().getSharedPreferences("DTPPref", 0);
+        pastRecommended = sP.getInt("PastRecommended", 100);
+
         db.open();
+
         // Populate list
         Cursor cursor = db.getAllRows("USERDECKS", 0);
-        adapter = new ListViewCustomAdapterUserDecks(this, cursor);
+        adapter = new ListViewCustomAdapterUserDecks(this, cursor, this.getResources().getConfiguration());
         decks.setAdapter(adapter);
 
-        // Populate recommended deck
-        TextView recommendedDeck = (TextView) findViewById(R.id.txt_RecomendedDeck);
-        cursor = db.getAllRows("FACEDDECKS", 1);
+        TextView recommendedText = (TextView) findViewById(R.id.txt_RecomendedDeck);
 
-        // Find which deck has been faced the most.
-        int timesFaced[] = new int[cursor.getCount()];
-
-        // Set up for count.
-        for (int x = 0; x < cursor.getCount(); x++) {
-            timesFaced[x] = 0;
-        }
-
-        // Count
+        // Create Recommended table if it does not exist and see if any decks have been played.
+        db.createTable("RECOMMENDED", 3);
         cursor = db.getAllRows("RECOMMENDED", 3);
-        for (int x = 0; x < cursor.getCount(); x++) {
-            if (cursor.getInt(cursor.getColumnIndexOrThrow("deck")) != 0){
-                timesFaced[cursor.getInt(cursor.getColumnIndexOrThrow("deck")) - 1]++;
-            }
-        }
 
-        // Find the most played.
-        // If there have been decks that have been faced.
-        if (timesFaced.length != 0) {
+        // Skip if there has not been any decks faced.
+        if (cursor.getCount() != 0) {
+            cursor = db.getAllRows("FACEDDECKS", 1);
+
+            // Find which deck has been faced the most.
+            int timesFaced[] = new int[cursor.getCount()];
+
+            // Count
+            cursor = db.getAllRows("RECOMMENDED", 3);
+            cursor.moveToLast();
+
+            if (pastRecommended <= cursor.getCount()) {
+                for (int x = cursor.getCount(); x > (cursor.getCount() - pastRecommended); x--) {
+                    if (cursor.getInt(cursor.getColumnIndexOrThrow("deck")) != 0) {
+                        timesFaced[cursor.getInt(cursor.getColumnIndexOrThrow("deck")) - 1]++;
+                        //Toast.makeText(getApplicationContext(), Integer.toString(timesFaced[cursor.getInt(cursor.getColumnIndexOrThrow("deck")) - 1]), Toast.LENGTH_SHORT).show();
+                    }
+                    cursor.moveToPrevious();
+                }
+
+            } else {
+                for (int x = 1; x <= cursor.getCount(); x++) {
+                    if (cursor.getInt(cursor.getColumnIndexOrThrow("deck")) != 0) {
+                        timesFaced[cursor.getInt(cursor.getColumnIndexOrThrow("deck")) - 1]++;
+                    }
+                    cursor.moveToPrevious();
+                }
+            }
+            cursor.close();
+
+            // Find the most played.
             int times = timesFaced[0];
             int deck = 0;
 
@@ -103,38 +124,97 @@ public class UserDeckDisplay extends Activity {
                     deck = x;
                 }
             }
-            cursor.close();
 
             // Get how many win/loss databases there are.
-            Cursor userdeckCursor;
-            userdeckCursor = db.getAllRows("USERDECKS", 0);
-            cursor.moveToFirst();
-            Cursor cursorRecommended = db.getAllRows("[" + userdeckCursor.getString(userdeckCursor.getColumnIndexOrThrow("name")) + "]", 2);
-            /*cursorRecommended.moveToPosition(deck);
-            int recommended = 0;
-            int wins = cursorRecommended.getInt(cursorRecommended.getColumnIndexOrThrow("wins"));
+            Cursor userDeckCursor = db.getAllRows("USERDECKS", 0); // Used to iterate through win/loss tables.
+            Cursor cursorWinLoss; // Used to find win rate.
+            cursorWinLoss = db.getAllRows("[" + userDeckCursor.getString(userDeckCursor.getColumnIndexOrThrow("name")) + "]", 2);
+            cursorWinLoss.moveToPosition(deck);
 
-            // Find which has the most wins against the deck.
-            for (int x = 1; x < cursor.getCount(); x++) {
-                cursor.moveToNext();
-                cursorRecommended = db.getAllRows(cursor.getString(cursor.getColumnIndexOrThrow("name")), 2);
-                cursorRecommended.moveToPosition(deck);
-                if (cursorRecommended.getInt(cursorRecommended.getColumnIndexOrThrow("wins")) > wins) {
-                    wins = cursorRecommended.getInt(cursorRecommended.getColumnIndexOrThrow("wins"));
-                    recommended = x;
+            int wins = cursorWinLoss.getInt(cursorWinLoss.getColumnIndexOrThrow("wins"));
+            int losses = cursorWinLoss.getInt(cursorWinLoss.getColumnIndexOrThrow("losses"));
+            double winRate;
+
+            if (wins + losses != 0) {
+                winRate = ((double) wins / (wins + losses)) * 100;
+            } else
+                winRate = 0;
+
+            int recommendedDeck = 0;
+
+            // Find which has the best win ratio against the deck.
+            for (int x = 1; x < userDeckCursor.getCount(); x++) {
+                // Collect information from the current win/loss table.
+                userDeckCursor.moveToNext();
+                cursorWinLoss = db.getAllRows("[" + userDeckCursor.getString(userDeckCursor.getColumnIndexOrThrow("name")) + "]", 2);
+                cursorWinLoss.moveToPosition(deck);
+                wins = cursorWinLoss.getInt(cursorWinLoss.getColumnIndexOrThrow("wins"));
+                losses = cursorWinLoss.getInt(cursorWinLoss.getColumnIndexOrThrow("losses"));
+
+                // Compare it to the current holder of recommended.
+                if (((double) wins / (wins + losses)) * 100 > winRate) {
+                    winRate = ((double) wins / (wins + losses)) * 100;
+                    recommendedDeck = x;
                 }
             }
-            cursorRecommended.close();
+            cursorWinLoss.close();
 
             // Populate the display.
-            cursor.moveToPosition(recommended);
+            userDeckCursor.moveToPosition(recommendedDeck);
+            String Name = userDeckCursor.getString(userDeckCursor.getColumnIndexOrThrow("name"));
+            recommendedText.setText(Name);
+            recommendedText.setTextColor(parseColor(userDeckCursor.getString(userDeckCursor.getColumnIndexOrThrow("textcolor"))));
+            recommendedText.setBackgroundColor(parseColor(userDeckCursor.getString(userDeckCursor.getColumnIndexOrThrow("bgcolor"))));
+            userDeckCursor.close();
 
-            recommendedDeck.setText(cursor.getString(cursor.getColumnIndexOrThrow("name")));
-            recommendedDeck.setTextColor(Color.parseColor(cursor.getString(cursor.getColumnIndexOrThrow("textcolor"))));
-            recommendedDeck.setBackgroundColor(Color.parseColor(cursor.getString(cursor.getColumnIndexOrThrow("bgcolor"))));
+            // Set Text Size.
+            Configuration configuration = this.getResources().getConfiguration();
+            int screenWidthDp = configuration.screenWidthDp;
 
-            db.close();*/
+            if (screenWidthDp <= 359) {
+                if (Name.length() <= 10) {
+                    recommendedText.setTextSize(30);
+                } else if (Name.length() <= 17) {
+                    recommendedText.setTextSize(18);
+                } else if (Name.length() <= 28) {
+                    recommendedText.setTextSize(11);
+                }
+            } else if (screenWidthDp <= 400) {
+                if (Name.length() <= 10) {
+                    recommendedText.setTextSize(35);
+                } else if (Name.length() <= 17) {
+                    recommendedText.setTextSize(21);
+                } else if (Name.length() <= 28) {
+                    recommendedText.setTextSize(12);
+                }
+            } else if (screenWidthDp <= 599) {
+                if (Name.length() <= 10) {
+                    recommendedText.setTextSize(40);
+                } else if (Name.length() <= 17) {
+                    recommendedText.setTextSize(24);
+                } else if (Name.length() <= 28) {
+                    recommendedText.setTextSize(15);
+                }
+            } else if (screenWidthDp <= 719) {
+                if (Name.length() <= 10) {
+                    recommendedText.setTextSize(52);
+                } else if (Name.length() <= 17) {
+                    recommendedText.setTextSize(31);
+                } else if (Name.length() <= 28) {
+                    recommendedText.setTextSize(20);
+                }
+            } else {
+                if (Name.length() <= 10) {
+                    recommendedText.setTextSize(61);
+                } else if (Name.length() <= 17) {
+                    recommendedText.setTextSize(36);
+                } else if (Name.length() <= 28) {
+                    recommendedText.setTextSize(27);
+                }
+            }
         }
+
+        db.close();
     }
 
     private final View.OnClickListener toggleAddDeck =

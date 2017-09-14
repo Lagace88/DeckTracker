@@ -1,7 +1,9 @@
-package com.example.tyler.hearthstonedecktracker;
+package com.tool.dirtytgaming.decktrackerpro;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -14,14 +16,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.PopupWindow;
-import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class FDOptions extends Activity {
     DBAdapter db;
+    boolean facedDeck;
     int position;
     int userPosition;
-    String UserDeck;
+    String userDeckName;
+    ProgressDialog deleteBar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,11 +49,19 @@ public class FDOptions extends Activity {
         Back.setOnClickListener(toggleBack);
 
         // Display the deck at hand
+        facedDeck = getIntent().getBooleanExtra("FacedDeck", true);
         position = getIntent().getIntExtra("Position", 0);
-        UserDeck = getIntent().getStringExtra("UserDeck");
+        userDeckName = getIntent().getStringExtra("UserDeckName");
         userPosition = getIntent().getIntExtra("UserPosition", 0);
         db = new DBAdapter(this);
         populate();
+
+        // Prepare progress bar
+        deleteBar = new ProgressDialog(FDOptions.this);
+        deleteBar.setCancelable(false);
+        deleteBar.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        deleteBar.setMax(100);
+        deleteBar.setMessage("Deleting Deck...");
     }
 
     @Override
@@ -61,20 +73,68 @@ public class FDOptions extends Activity {
     public void populate() {
         TextView current = (TextView) findViewById(R.id.txt_FDODeck);
 
+        String Name = "";
         db.open();
-        Cursor c = db.getRow(position, "FACEDDECKS", 1);
+
+        if (facedDeck == true) {
+            Cursor c = db.getRow(position, "FACEDDECKS", 1);
+            Name = c.getString(c.getColumnIndexOrThrow("name"));
+            current.setText(Name);
+            current.setTextColor(Color.parseColor(c.getString(c.getColumnIndexOrThrow("textcolor"))));
+            current.setBackgroundColor(Color.parseColor(c.getString(c.getColumnIndexOrThrow("bgcolor"))));
+        } else {
+            Cursor c = db.getRow(userPosition, "USERDECKS", 0);
+            Name = c.getString(c.getColumnIndexOrThrow("name"));
+            current.setText(Name);
+            current.setTextColor(Color.parseColor(c.getString(c.getColumnIndexOrThrow("textcolor"))));
+            current.setBackgroundColor(Color.parseColor(c.getString(c.getColumnIndexOrThrow("bgcolor"))));
+        }
         db.close();
-        String Name = c.getString(c.getColumnIndexOrThrow("name"));
-        current.setText(Name);
-        current.setTextColor(Color.parseColor(c.getString(c.getColumnIndexOrThrow("textcolor"))));
-        current.setBackgroundColor(Color.parseColor(c.getString(c.getColumnIndexOrThrow("bgcolor"))));
+
         // Set appropriate text size.
-        if (Name.length() <= 10) {
-            current.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30);
-        } else if (Name.length() <= 17) {
-            current.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
-        } else if (Name.length() <= 28) {
-            current.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
+        Configuration configuration = this.getResources().getConfiguration();
+        int screenWidthDp = configuration.screenWidthDp;
+
+        if (screenWidthDp <= 359) {
+            if (Name.length() <= 10) {
+                current.setTextSize(30);
+            } else if (Name.length() <= 17) {
+                current.setTextSize(18);
+            } else if (Name.length() <= 28) {
+                current.setTextSize(11);
+            }
+        } else if (screenWidthDp <= 400) {
+            if (Name.length() <= 10) {
+                current.setTextSize(35);
+            } else if (Name.length() <= 17) {
+                current.setTextSize(21);
+            } else if (Name.length() <= 28) {
+                current.setTextSize(12);
+            }
+        } else if (screenWidthDp <= 599) {
+            if (Name.length() <= 10) {
+                current.setTextSize(40);
+            } else if (Name.length() <= 17) {
+                current.setTextSize(24);
+            } else if (Name.length() <= 28) {
+                current.setTextSize(15);
+            }
+        } else if (screenWidthDp <= 719) {
+            if (Name.length() <= 10) {
+                current.setTextSize(52);
+            } else if (Name.length() <= 17) {
+                current.setTextSize(31);
+            } else if (Name.length() <= 28) {
+                current.setTextSize(20);
+            }
+        } else {
+            if (Name.length() <= 10) {
+                current.setTextSize(61);
+            } else if (Name.length() <= 17) {
+                current.setTextSize(36);
+            } else if (Name.length() <= 28) {
+                current.setTextSize(27);
+            }
         }
     }
 
@@ -84,6 +144,9 @@ public class FDOptions extends Activity {
                 public void onClick(View v) {
                     Intent intent = new Intent(FDOptions.this, ChangeName.class);
                     intent.putExtra("Position", position);
+                    intent.putExtra("UserPosition", userPosition);
+                    intent.putExtra("UserDeckName", userDeckName);
+                    intent.putExtra("FacedDeck", facedDeck);
                     startActivity(intent);
                 }
             };
@@ -109,25 +172,31 @@ public class FDOptions extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Return for Background Color
         String color;
+        db.open();
+
         if (requestCode == 1 && resultCode == RESULT_OK) {
             color = data.getStringExtra("selectedColor");
-
-            // Save new color to FACEDDECKS
-            db.open();
-            db.updateBGColor(position, color, "FACEDDECKS");
-            db.close();
+            if (facedDeck) {
+                // Save new color to FACEDDECKS
+                db.updateBGColor(position, color, "FACEDDECKS");
+            } else {
+                // Save new color to USERDECKS
+                db.updateBGColor(userPosition, color, "USERDECKS");
+            }
         }
 
         // Return for Text Color
         if (requestCode == 2 && resultCode == RESULT_OK) {
             color = data.getStringExtra("selectedColor");
-
-            // Save new color to FACEDDECKS
-            db.open();
-            db.updateTextColor(position, color, "FACEDDECKS");
-            db.close();
+            if (facedDeck) {
+                // Save new color to FACEDDECKS
+                db.updateTextColor(position, color, "FACEDDECKS");
+            } else {
+                // Save new color to USERDECKS
+                db.updateTextColor(userPosition, color, "USERDECKS");
+            }
         }
-
+        db.close();
         populate();
     }
 
@@ -142,7 +211,23 @@ public class FDOptions extends Activity {
     private void displayDWinLossPopup() {
         LayoutInflater li = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         final View container = li.inflate(R.layout.popup_delete_face_past_win_loss, (ViewGroup) findViewById(R.id.PURL));
-        final PopupWindow pW = new PopupWindow(container, 450, 450, true);
+        Configuration configuration = this.getResources().getConfiguration();
+        int screenWidthDp = configuration.screenWidthDp;
+        PopupWindow pWtest;
+
+        if (screenWidthDp <= 359) {
+            pWtest = new PopupWindow(container, 450, 250, true);
+        } else if (screenWidthDp <= 400) {
+            pWtest = new PopupWindow(container, 600, 600, true);
+        } else if (screenWidthDp <= 599) {
+            pWtest = new PopupWindow(container, 600, 600, true);
+        } else if (screenWidthDp <= 719) {
+            pWtest = new PopupWindow(container, 450, 250, true);
+        } else {
+            pWtest = new PopupWindow(container, 450, 250, true);
+        }
+
+        final PopupWindow pW = pWtest;
         pW.showAtLocation(findViewById(R.id.FDORel), Gravity.CENTER, 0, 0);
 
         Button Yes = (Button) container.findViewById(R.id.btn_DeleteWinLossYes);
@@ -152,9 +237,23 @@ public class FDOptions extends Activity {
         Yes.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 db.open();
-                db.updateWins(position, 0, UserDeck);
-                db.updateLoses(position, 0, UserDeck);
-                db.updateWinRate(calculateNewWinRate(UserDeck), userPosition);
+
+                if (facedDeck) {
+                    db.updateWins(userPosition, 0, userDeckName);
+                    db.updateLoses(userPosition, 0, userDeckName);
+                    db.updateWinRate(50, userPosition);
+                } else {
+                    // Change the wins and losses in the win rate table.
+                    Cursor winRateCursor = db.getAllRows('[' + userDeckName + ']', 2);
+
+                    for (int x = 1; x <= winRateCursor.getCount(); x++) {
+                        db.updateWins(x, 0, '[' + userDeckName + ']');
+                        db.updateLoses(x, 0, '[' + userDeckName + ']');
+                    }
+
+                    // Change the winrate in USERDECKS
+                    db.updateWinRate(0, userPosition);
+                }
                 db.close();
                 pW.dismiss();
             }
@@ -178,7 +277,23 @@ public class FDOptions extends Activity {
     public void displayDeleteDeckPopUp() {
         LayoutInflater li = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         final View container = li.inflate(R.layout.popup_delete_faced_deck, (ViewGroup) findViewById(R.id.PUDFD));
-        final PopupWindow pW = new PopupWindow(container, 450, 450, true);
+        PopupWindow pWtest;
+        Configuration configuration = this.getResources().getConfiguration();
+        int screenWidthDp = configuration.screenWidthDp;
+
+        if (screenWidthDp <= 359) {
+            pWtest = new PopupWindow(container, 450, 250, true);
+        } else if (screenWidthDp <= 400) {
+            pWtest = new PopupWindow(container, 600, 600, true);
+        } else if (screenWidthDp <= 599) {
+            pWtest = new PopupWindow(container, 600, 600, true);
+        } else if (screenWidthDp <= 719) {
+            pWtest = new PopupWindow(container, 450, 250, true);
+        } else {
+            pWtest = new PopupWindow(container, 450, 250, true);
+        }
+
+        final PopupWindow pW = pWtest;
         pW.showAtLocation(findViewById(R.id.FDORel), Gravity.CENTER, 0, 0);
 
         Button Yes = (Button) container.findViewById(R.id.btn_DeleteFacedDeckYes);
@@ -189,117 +304,71 @@ public class FDOptions extends Activity {
             @Override
             public void onClick(View v) {
                 db.open();
-                // Delete from each UserDeck Database
-                Cursor userDecksCursor = db.getAllRows("USERDECKS", 0);
-                userDecksCursor.moveToFirst();
 
-                for (int x = 0; x < userDecksCursor.getCount(); x++) {
-                    db.deleteRow(position, "[" + userDecksCursor.getString(userDecksCursor.getColumnIndexOrThrow("name")) + "]");
+                if (facedDeck) {
+                    // Delete from each UserDeck Database
+                    Cursor userDecksCursor = db.getAllRows("USERDECKS", 0);
 
-                    // Decrease ID for each entry beyond position.
-                    Cursor cursor1 = db.getAllRows("[" + userDecksCursor.getString(userDecksCursor.getColumnIndexOrThrow("name")) + "]", 2);
-                    cursor1.moveToPosition(position - 1);
+                    for (int x = 0; x < userDecksCursor.getCount(); x++) {
+                        db.deleteRow(position, "[" + userDecksCursor.getString(userDecksCursor.getColumnIndexOrThrow("name")) + "]");
 
-                    for (int y = position; y <= cursor1.getCount(); y++) {
-                        db.updateID(y + 1, y, "[" + userDecksCursor.getString(userDecksCursor.getColumnIndexOrThrow("name")) + "]");
-                    }
+                        // Decrease ID for each entry beyond position.
+                        Cursor cursor1 = db.getAllRows("[" + userDecksCursor.getString(userDecksCursor.getColumnIndexOrThrow("name")) + "]", 2);
+                        cursor1.moveToPosition(position - 1);
 
-                    // Calculate new winRate for User Deck.
-                    db.updateWinRate(calculateNewWinRate("[" + userDecksCursor.getString(userDecksCursor.getColumnIndexOrThrow("name")) + "]"),
-                            userDecksCursor.getInt(userDecksCursor.getColumnIndexOrThrow("_id")));
-                    userDecksCursor.moveToNext();
-                }
-                userDecksCursor.close();
-
-                // Delete from FacedDecks
-                db.deleteRow(position, "FACEDDECKS");
-                Cursor facedDecksCursor = db.getAllRows("FACEDDECKS", 1);
-                facedDecksCursor.moveToPosition(position - 1);
-
-                // Decrease ID beyond position
-                for (int x = position; x <= facedDecksCursor.getCount(); x++) {
-                    db.updateID(x + 1, x, "FACEDDECKS");
-                    facedDecksCursor.moveToNext();
-                }
-                facedDecksCursor.close();
-
-                // Prepare container for delete.
-                //Cursor recommendedCursor = db.getAllRows("RECOMMENDED", 3);
-                // db.close();
-                //ContainerForDelete params = new ContainerForDelete(db, recommendedCursor, position);
-
-                // Start AsyncThread DeleteFromRecommended.
-                //DeleteFromRecommended thread = new DeleteFromRecommended();
-                //thread.execute(params);
-
-                // Delete for Recommended
-               /* Cursor recommendedCursor = db.getAllRows("RECOMMENDED", 3);
-                recommendedCursor.moveToFirst();
-                int y = 0;
-                int numberOfEntriesRemoved = 0;
-
-                for (int x = 0; x < recommendedCursor.getCount(); x++) {
-                    // See if deck matches the deck we are deleting.
-                    if (recommendedCursor.getInt(recommendedCursor.getColumnIndexOrThrow("deck")) == position) {
-                        // Bring down each deck after.
-                        for (y = x + 1; y < recommendedCursor.getCount(); y++) {
-                            recommendedCursor.moveToNext();
-                            db.updateRecommended(recommendedCursor.getInt(recommendedCursor.getColumnIndexOrThrow("deck")), y);
+                        for (int y = position; y <= cursor1.getCount(); y++) {
+                            db.updateID(y + 1, y, "[" + userDecksCursor.getString(userDecksCursor.getColumnIndexOrThrow("name")) + "]");
                         }
-                        // Update cursor1
-                        recommendedCursor = db.getAllRows("RECOMMENDED", 3);
 
-                        // Move to one position behind to make up for movetonext.
-                        recommendedCursor.moveToPosition(x - 1);
-
-                        // Reset x
-                        x = x - 1;
-
-                        numberOfEntriesRemoved++;
+                        // Calculate new winRate for User Deck.
+                        db.updateWinRate(calculateNewWinRate("[" + userDecksCursor.getString(userDecksCursor.getColumnIndexOrThrow("name")) + "]"),
+                                userDecksCursor.getInt(userDecksCursor.getColumnIndexOrThrow("_id")));
+                        userDecksCursor.moveToNext();
                     }
-                    recommendedCursor.moveToNext();
+                    userDecksCursor.close();
+
+                    // Delete from FacedDecks
+                    db.deleteRow(position, "FACEDDECKS");
+                    Cursor facedDecksCursor = db.getAllRows("FACEDDECKS", 1);
+                    facedDecksCursor.moveToPosition(position - 1);
+
+                    // Decrease ID beyond position
+                    for (int x = position; x <= facedDecksCursor.getCount(); x++) {
+                        db.updateID(x + 1, x, "FACEDDECKS");
+                        facedDecksCursor.moveToNext();
+                    }
+
+                    facedDecksCursor.close();
+                    pW.dismiss();
+                    setResult(RESULT_OK);
+                    db.close();
+
+                    // Delete from Recommended
+                    new deleteDeck().execute();
+                } else {
+                    // Delete from USERDECKS
+                    Cursor userDecksCursor = db.getAllRows("USERDECKS", 0);
+
+                    db.deleteRow(userPosition, "USERDECKS");
+
+                    // Update rest of USERDECKS
+                    for (int x = userPosition + 1; x <= userDecksCursor.getCount(); x++) {
+                        db.updateID(x, x - 1, "USERDECKS");
+                    }
+
+                    // Delete win ratio table
+                    db.deleteTable(userDeckName);
+
+                    pW.dismiss();
+                    setResult(RESULT_OK);
+                    db.close();
+                    Intent intent = new Intent(FDOptions.this, UserDeckDisplay.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
                 }
-
-                // Assign 0 to number of spots now free to allow win/loss to know it is open.
-                for (int x = numberOfEntriesRemoved; x > 0; x--) {
-                            db.updateRecommended(0, recommendedCursor.getCount() + 1 - x);
-                }
-
-                // Lower each deck number by 1 that is above position.
-                recommendedCursor.moveToFirst();
-                for (int x = 0; x < recommendedCursor.getCount(); x++) {
-                    if (recommendedCursor.getInt(recommendedCursor.getColumnIndexOrThrow("deck")) > position &&
-                            recommendedCursor.getInt(recommendedCursor.getColumnIndexOrThrow("deck")) != 0) {
-                        db.updateRecommended(recommendedCursor.getInt(recommendedCursor.getColumnIndexOrThrow("deck")) - 1, x + 1);
-                    }
-                    recommendedCursor.moveToNext();
-                }*/
-
-                pW.dismiss();
-                setResult(RESULT_OK);
-
-                // Prepare progress bar.
-                LayoutInflater li = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-                final View container = li.inflate(R.layout.progressbar_deletedeckprogressbar, (ViewGroup) findViewById(R.id.progressBarLayout));
-                final PopupWindow popupProgressBar = new PopupWindow(container, 450, 450, true);
-                popupProgressBar.showAtLocation(findViewById(R.id.FDORel), Gravity.CENTER, 0, 0);
-                ProgressBar deleteBar = (ProgressBar) findViewById(R.id.progressBar);
-
-                Cursor recommendedCursor = db.getAllRows("RECOMMENDED", 3);
-                db.close();
-                ContainerForDelete cfd = new ContainerForDelete(db, recommendedCursor, position);
-                DeleteFromRecommended task = new DeleteFromRecommended(new DeleteFromRecommended.AsyncResponse() {
-                    @Override
-                    public void processFinish() {
-
-                    }
-                });
-                task.execute(cfd);
-                popupProgressBar.dismiss();
-                finish();
             }
         });
-    
+
 
 
         No.setOnClickListener(new View.OnClickListener() {
@@ -334,5 +403,54 @@ public class FDOptions extends Activity {
             return 50;
         }
         return (int) Math.round(wins / (wins + losses) * 100);
+    }
+
+    class deleteDeck extends AsyncTask<Void, Integer, Integer> {
+        Cursor recommendedCursor;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            db.open();
+            deleteBar.show();
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            super.onProgressUpdate(values);
+            deleteBar.setProgress(values[0]);
+        }
+
+        @Override
+        protected Integer doInBackground(Void... params) {
+            // Delete from Recommended
+            // Run through entirety of RECOMMENDED
+            recommendedCursor = db.getAllRows("RECOMMENDED", 3);
+
+            for (int x = 0; x < recommendedCursor.getCount() - 1; x++) {
+                recommendedCursor = db.getAllRows("RECOMMENDED", 3);
+                recommendedCursor.moveToPosition(x);
+                // If the entry matches the deck we are deleting.
+                if (recommendedCursor.getInt(recommendedCursor.getColumnIndexOrThrow("deck")) == position) {
+                    // Bring each deck value down.
+                    for (int y = x; y < recommendedCursor.getCount() - 1; y++) {
+                        recommendedCursor.moveToNext();
+                        db.updateRecommended(recommendedCursor.getInt(recommendedCursor.getColumnIndexOrThrow("deck")), y + 1);
+                    }
+                    x--;
+                }
+                publishProgress(x);
+            }
+            publishProgress(100);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Integer integer) {
+            super.onPostExecute(integer);
+            deleteBar.dismiss();
+            db.close();
+            finish();
+        }
     }
 }

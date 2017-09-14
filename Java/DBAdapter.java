@@ -1,4 +1,4 @@
-package com.example.tyler.hearthstonedecktracker;
+package com.tool.dirtytgaming.decktrackerpro;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-import android.widget.Toast;
 
 public class DBAdapter {
 
@@ -29,7 +28,7 @@ public class DBAdapter {
 	// DataBase info:
 	public static final String DATABASE_NAME = "decks";
 	public static final String DATABASE_TABLE_USERDECKS = "USERDECKS";
-	public static final int DATABASE_VERSION = 3; // The version number must be incremented each time a change to DB structure occurs.
+	public static final int DATABASE_VERSION = 5; // The version number must be incremented each time a change to DB structure occurs.
 	
 	private final Context context;
 	private DatabaseHelper myDBHelper;
@@ -266,6 +265,20 @@ public class DBAdapter {
 		// Add flag.
 		return db.insert("RECOMMENDED", null, flag) != 0;
 	}
+
+	public void updateWinRateName (String oldName, String newName) {
+		String changeName =
+				"ALTER TABLE " + oldName
+				+ " RENAME TO " + newName + ";";
+
+		db.execSQL(changeName);
+	}
+
+	public void deleteTable (String tableName) {
+        String delete = "DROP TABLE IF EXISTS [" + tableName + ']';
+
+        db.execSQL(delete);
+    }
 
 	public void createTable(String tableName, int tableType) {
 		// tableType == 0 USERDECKS

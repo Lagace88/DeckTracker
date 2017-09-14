@@ -1,19 +1,18 @@
-package com.example.tyler.hearthstonedecktracker;
+package com.tool.dirtytgaming.decktrackerpro;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
-
-import java.sql.DatabaseMetaData;
 
 public class AddDeck extends Activity {
     boolean UserDeck;
@@ -28,15 +27,8 @@ public class AddDeck extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_deck);
 
-        ImageView Background = (ImageView) findViewById(R.id.imgBackground);
-
         // Load UserDeck
         UserDeck = getIntent().getBooleanExtra("USERDECK", true);
-
-        // Load UserDeckName
-
-        // Load Background
-        getBackground();
 
         // Declare Image Buttons
         ImageView BackgroundColor = (ImageView) findViewById(R.id.imgBackgroundColor);
@@ -54,8 +46,29 @@ public class AddDeck extends Activity {
         Done.setOnClickListener(toggleDone);
         Back.setOnClickListener(toggleBack);
 
+        // EditText
+        EditText deckName = (EditText) findViewById(R.id.etextDeckName);
+
         //Database
         db = new DBAdapter(this);
+
+        // Text size
+        Configuration configuration = this.getResources().getConfiguration();
+        int screenWidthDp = configuration.screenWidthDp;
+
+        if (screenWidthDp <= 359) {
+            deckName.setTextSize(30);
+        } else if (screenWidthDp <= 409) {
+            deckName.setTextSize(35);
+        } else if (screenWidthDp <= 599) {
+            deckName.setTextSize(40);
+        } else if (screenWidthDp <= 719) {
+            deckName.setTextSize(35);
+        } else if (screenWidthDp <= 849) {
+            deckName.setTextSize(40);
+        } else {
+            deckName.setTextSize(41);
+        }
     }
 
 
@@ -258,32 +271,6 @@ public class AddDeck extends Activity {
             ImageView TextColor = (ImageView) findViewById(R.id.imgTextColor);
             TextColor.setBackgroundColor(Color.parseColor(TextColorCode));
             TextColorChange = true;
-        }
-    }
-
-    void getBackground() {
-        // Declare Image for Background
-        ImageView IntroBackground = (ImageView) findViewById(R.id.imgBackground);
-
-        // Load Background
-        SharedPreferences sharedPreferences = getSharedPreferences("HearthDeckTracker", Context.MODE_PRIVATE);
-        int ActivityBackground = sharedPreferences.getInt("APPBACKGROUND", 0);
-
-        switch (ActivityBackground) {
-            case 0:
-                IntroBackground.setImageResource(R.drawable.hearthstone);
-                break;
-            case 1:
-                IntroBackground.setImageResource(R.drawable.leeroy);
-                break;
-            case 2:
-                IntroBackground.setImageResource(R.drawable.hearthstonetwo);
-                break;
-            default:
-                Toast error = Toast.makeText(this.getApplication(), "Background Could Not Be Found, \n" +
-                        "Loading Default Background", Toast.LENGTH_LONG);
-                error.show();
-                IntroBackground.setImageResource(R.drawable.hearthstone);
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.example.tyler.hearthstonedecktracker;
+package com.tool.dirtytgaming.decktrackerpro;
 
 import android.app.Activity;
 import android.content.Intent;

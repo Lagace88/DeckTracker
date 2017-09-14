@@ -1,8 +1,8 @@
-package com.example.tyler.hearthstonedecktracker;
+package com.tool.dirtytgaming.decktrackerpro;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.database.Cursor;
-import android.database.MergeCursor;
 import android.graphics.Color;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -12,9 +12,11 @@ import android.widget.CursorAdapter;
 import android.widget.TextView;
 
 public class ListViewCustomAdapterFacedDecks extends CursorAdapter {
+    Configuration configuration;
 
-    public ListViewCustomAdapterFacedDecks(Context context, Cursor cursor) {
+    public ListViewCustomAdapterFacedDecks(Context context, Cursor cursor, Configuration configuration) {
         super(context, cursor, 0);
+        this.configuration = configuration;
     }
 
     @Override
@@ -44,14 +46,52 @@ public class ListViewCustomAdapterFacedDecks extends CursorAdapter {
 
         // Change properties
         facedDeckName.setText(Name);
+
         // Set appropriate text size.
-        if (Name.length() <= 10) {
-            facedDeckName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30);
-        }else if (Name.length() <= 17) {
-            facedDeckName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
-        }else if (Name.length() <= 28) {
-            facedDeckName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
+        int screenWidthDp = configuration.screenWidthDp;
+
+        if (screenWidthDp <= 359) {
+            if (Name.length() <= 10) {
+                facedDeckName.setTextSize(25);
+            } else if (Name.length() <= 17) {
+                facedDeckName.setTextSize(14);
+            } else if (Name.length() <= 28) {
+                facedDeckName.setTextSize(9);
+            }
+        } else if (screenWidthDp <= 400) {
+            if (Name.length() <= 10) {
+                facedDeckName.setTextSize(28);
+            } else if (Name.length() <= 17) {
+                facedDeckName.setTextSize(16);
+            } else if (Name.length() <= 28) {
+                facedDeckName.setTextSize(9);
+            }
+        } else if (screenWidthDp <= 599) {
+            if (Name.length() <= 10) {
+                facedDeckName.setTextSize(33);
+            } else if (Name.length() <= 17) {
+                facedDeckName.setTextSize(19);
+            } else if (Name.length() <= 28) {
+                facedDeckName.setTextSize(11);
+            }
+        } else if (screenWidthDp <= 719) {
+            if (Name.length() <= 10) {
+                facedDeckName.setTextSize(52);
+            } else if (Name.length() <= 17) {
+                facedDeckName.setTextSize(30);
+            } else if (Name.length() <= 28) {
+                facedDeckName.setTextSize(18);
+            }
+        } else {
+            if (Name.length() <= 10) {
+                facedDeckName.setTextSize(61);
+            } else if (Name.length() <= 17) {
+                facedDeckName.setTextSize(36);
+            } else if (Name.length() <= 28) {
+                facedDeckName.setTextSize(27);
+            }
         }
+
         facedDeckName.setTextColor(Color.parseColor(TextColor));
         facedDeckName.setBackgroundColor(Color.parseColor(BGColor));
 

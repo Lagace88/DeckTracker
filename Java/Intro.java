@@ -1,14 +1,10 @@
-package com.example.tyler.hearthstonedecktracker;
+package com.tool.dirtytgaming.decktrackerpro;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.Toast;
 
 public class Intro extends Activity {
     DBAdapter db;
@@ -28,15 +24,12 @@ public class Intro extends Activity {
         Options.setOnClickListener(toggleOptions);
         Exit.setOnClickListener(toggleExit);
 
-        getBackground();
          db = new DBAdapter(this);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
-        getBackground();
     }
 
     private final View.OnClickListener toggleStart =
@@ -70,31 +63,5 @@ public class Intro extends Activity {
                     System.exit(0);
                 }
             };
-
-    void getBackground() {
-        // Declare Image for Background
-        ImageView IntroBackground = (ImageView) findViewById(R.id.imgBackground);
-
-        // Load Background
-        SharedPreferences sharedPreferences = getSharedPreferences("HearthDeckTracker", Context.MODE_PRIVATE);
-        int ActivityBackground = sharedPreferences.getInt("APPBACKGROUND", 0);
-
-        switch (ActivityBackground) {
-            case 0:
-                IntroBackground.setImageResource(R.drawable.hearthstone);
-                break;
-            case 1:
-                IntroBackground.setImageResource(R.drawable.leeroy);
-                break;
-            case 2:
-                IntroBackground.setImageResource(R.drawable.hearthstonetwo);
-                break;
-            default:
-                Toast error = Toast.makeText(this.getApplication(), "Background Could Not Be Found, \n" +
-                        "Loading Default Background", Toast.LENGTH_LONG);
-                error.show();
-                IntroBackground.setImageResource(R.drawable.hearthstone);
-        }
-    }
 }
 

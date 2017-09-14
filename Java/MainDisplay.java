@@ -1,10 +1,9 @@
-package com.example.tyler.hearthstonedecktracker;
+package com.tool.dirtytgaming.decktrackerpro;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.database.Cursor;
-import android.database.CursorJoiner;
-import android.database.MergeCursor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.TypedValue;
@@ -31,10 +30,12 @@ public class MainDisplay extends Activity {
         // Declare Buttons
         Button AddDeck = (Button) findViewById(R.id.btnAddDeck);
         Button Back = (Button) findViewById(R.id.btnBack);
+        Button Options = (Button) findViewById(R.id.btnUserDeckOptions);
 
         // Listener Events for Buttons
         AddDeck.setOnClickListener(toggleAddDeck);
         Back.setOnClickListener(toggleBack);
+        Options.setOnClickListener(toggleOptions);
 
         FacedDecks = (ListView) findViewById(R.id.facedDecks);
 
@@ -47,25 +48,7 @@ public class MainDisplay extends Activity {
         TextView Current = (TextView) findViewById(R.id.txtCurrentDeck);
         TextView CurrentWinRate = (TextView) findViewById(R.id.txt_CurrentDeckWinRate);
 
-        db.open();
-        Cursor c = db.getRow(UserPosition, "USERDECKS", 0);
-        db.close();
 
-        String Name = c.getString(c.getColumnIndexOrThrow("name"));
-        Current.setText(Name);
-        Current.setTextColor(Color.parseColor(c.getString(c.getColumnIndexOrThrow("textcolor"))));
-        Current.setBackgroundColor(Color.parseColor(c.getString(c.getColumnIndexOrThrow("bgcolor"))));
-        if (Name.length() <= 10) {
-            Current.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30);
-        }else if (Name.length() <= 15) {
-            Current.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
-        }else if (Name.length() <= 28) {
-            Current.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
-        }
-
-        CurrentWinRate.setText(c.getInt(c.getColumnIndexOrThrow("winrate")) + "%");
-        CurrentWinRate.setTextColor(Color.parseColor(c.getString(c.getColumnIndexOrThrow("textcolor"))));
-        CurrentWinRate.setBackgroundColor(Color.parseColor(c.getString(c.getColumnIndexOrThrow("bgcolor"))));
 
         populateListView();
 
@@ -77,9 +60,10 @@ public class MainDisplay extends Activity {
 
                 // Start WinLoss
                 Intent intent = new Intent(MainDisplay.this, WinLoss.class);
-                intent.putExtra("USERDECKNAME", UserDeckName);
+                intent.putExtra("UserDeckName", UserDeckName);
                 intent.putExtra("Position", position + 1);
                 intent.putExtra("UserPosition", UserPosition);
+                intent.putExtra("FacedDeck", true);
                 startActivity(intent);
             }
         });
@@ -94,9 +78,12 @@ public class MainDisplay extends Activity {
     private void populateListView() {
         db.open();
         // Use query to combine to tables.
+        Cursor userDeckCursor = db.getRow(UserPosition, "USERDECKS", 0);
+        UserDeckName = userDeckCursor.getString(userDeckCursor.getColumnIndexOrThrow("name"));
+
         Cursor cursor = db.combine("[" + UserDeckName + "]");
 
-        adapter = new ListViewCustomAdapterFacedDecks(this, cursor);
+        adapter = new ListViewCustomAdapterFacedDecks(this, cursor, this.getResources().getConfiguration());
         FacedDecks.setAdapter(adapter);
 
         TextView Current = (TextView) findViewById(R.id.txtCurrentDeck);
@@ -110,12 +97,51 @@ public class MainDisplay extends Activity {
         Current.setText(Name);
         Current.setTextColor(Color.parseColor(c.getString(c.getColumnIndexOrThrow("textcolor"))));
         Current.setBackgroundColor(Color.parseColor(c.getString(c.getColumnIndexOrThrow("bgcolor"))));
-        if (Name.length() <= 10) {
-            Current.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30);
-        }else if (Name.length() <= 15) {
-            Current.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
-        }else if (Name.length() <= 28) {
-            Current.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
+
+        // Set Text for Current
+        Configuration configuration = this.getResources().getConfiguration();
+        int screenWidthDp = configuration.screenWidthDp;
+
+        if (screenWidthDp <= 359) {
+            if (Name.length() <= 10) {
+                Current.setTextSize(22);
+            } else if (Name.length() <= 17) {
+                Current.setTextSize(13);
+            } else if (Name.length() <= 28) {
+                Current.setTextSize(8);
+            }
+        } else if (screenWidthDp <= 400) {
+            if (Name.length() <= 10) {
+                Current.setTextSize(28);
+            } else if (Name.length() <= 17) {
+                Current.setTextSize(16);
+            } else if (Name.length() <= 28) {
+                Current.setTextSize(9);
+            }
+        } else if (screenWidthDp <= 599) {
+            if (Name.length() <= 10) {
+                Current.setTextSize(32);
+            } else if (Name.length() <= 17) {
+                Current.setTextSize(19);
+            } else if (Name.length() <= 28) {
+                Current.setTextSize(11);
+            }
+        } else if (screenWidthDp <= 719) {
+            if (Name.length() <= 10) {
+                Current.setTextSize(52);
+            } else if (Name.length() <= 17) {
+                Current.setTextSize(31);
+            } else if (Name.length() <= 28) {
+                Current.setTextSize(20);
+            }
+        } else {
+            if (Name.length() <= 10) {
+                Current.setTextSize(61);
+            } else if (Name.length() <= 17) {
+                Current.setTextSize(36);
+            } else if (Name.length() <= 28) {
+                Current.setTextSize(30);
+            }
         }
 
         CurrentWinRate.setText(c.getInt(c.getColumnIndexOrThrow("winrate")) + "%");
@@ -130,6 +156,18 @@ public class MainDisplay extends Activity {
                 public void onClick(View v) {
                     Intent intent = new Intent(MainDisplay.this, AddDeck.class);
                     intent.putExtra("USERDECK", false);
+                    startActivity(intent);
+                }
+            };
+
+    private final View.OnClickListener toggleOptions =
+            new View.OnClickListener() {
+                @Override
+                public  void onClick(View v) {
+                    Intent intent = new Intent(MainDisplay.this, FDOptions.class);
+                    intent.putExtra("UserDeckName", UserDeckName);
+                    intent.putExtra("UserPosition", UserPosition);
+                    intent.putExtra("FacedDeck", false);
                     startActivity(intent);
                 }
             };
