@@ -26,7 +26,8 @@
         android:layout_height="350sp"
         android:layout_above="@+id/btnAddDeck"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/textView7" />
 
     <Button
         android:id="@+id/btnAddDeck"
@@ -36,14 +37,14 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:text="Add Deck"
-        android:textSize="25sp" />
+        android:textSize="20dp" />
 
     <Button
         android:id="@+id/btnBack"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:text="Back"
-        android:textSize="25sp"
+        android:textSize="20dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />

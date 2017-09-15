@@ -12,8 +12,7 @@
         android:text="This will delete this deck!"
         android:textSize="18sp"
         android:layout_alignParentTop="true"
-        android:layout_alignRight="@+id/btn_DeleteFacedDeckNo"
-        android:layout_alignEnd="@+id/btn_DeleteFacedDeckNo" />
+        android:layout_centerHorizontal="true"/>
 
     <TextView
         android:id="@+id/textView4"
