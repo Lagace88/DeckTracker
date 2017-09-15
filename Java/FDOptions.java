@@ -215,16 +215,36 @@ public class FDOptions extends Activity {
         int screenWidthDp = configuration.screenWidthDp;
         PopupWindow pWtest;
 
+        // Will be used to convert pixels size to dps for popup window.
+        float scale = getResources().getDisplayMetrics().density;
+        int hieghtInP;
+        int widthInP;
+
         if (screenWidthDp <= 359) {
-            pWtest = new PopupWindow(container, 450, 250, true);
+            widthInP = (int) (250 * scale + 0.5f);
+            hieghtInP = (int) (150 * scale + 0.5f);
+            pWtest = new PopupWindow(container, widthInP, hieghtInP, true);
+
         } else if (screenWidthDp <= 400) {
-            pWtest = new PopupWindow(container, 600, 600, true);
+            widthInP = (int) (250 * scale + 0.5f);
+            hieghtInP = (int) (150 * scale + 0.5f);
+            pWtest = new PopupWindow(container, widthInP, hieghtInP, true);
+
         } else if (screenWidthDp <= 599) {
-            pWtest = new PopupWindow(container, 600, 600, true);
+            widthInP = (int) (300 * scale + 0.5f);
+            hieghtInP = (int) (150 * scale + 0.5f);
+            pWtest = new PopupWindow(container, widthInP, hieghtInP, true);
+
         } else if (screenWidthDp <= 719) {
-            pWtest = new PopupWindow(container, 450, 250, true);
+            widthInP = (int) (450 * scale + 0.5f);
+            hieghtInP = (int) (250 * scale + 0.5f);
+            pWtest = new PopupWindow(container, widthInP, hieghtInP, true);
+
         } else {
-            pWtest = new PopupWindow(container, 450, 250, true);
+            widthInP = (int) (450 * scale + 0.5f);
+            hieghtInP = (int) (250 * scale + 0.5f);
+            pWtest = new PopupWindow(container, widthInP, hieghtInP, true);
+
         }
 
         final PopupWindow pW = pWtest;
@@ -281,16 +301,36 @@ public class FDOptions extends Activity {
         Configuration configuration = this.getResources().getConfiguration();
         int screenWidthDp = configuration.screenWidthDp;
 
+        // Will be used to convert pixels size to dps for popup window.
+        float scale = getResources().getDisplayMetrics().density;
+        int hieghtInP;
+        int widthInP;
+
         if (screenWidthDp <= 359) {
-            pWtest = new PopupWindow(container, 450, 250, true);
+            widthInP = (int) (250 * scale + 0.5f);
+            hieghtInP = (int) (150 * scale + 0.5f);
+            pWtest = new PopupWindow(container, widthInP, hieghtInP, true);
+
         } else if (screenWidthDp <= 400) {
-            pWtest = new PopupWindow(container, 600, 600, true);
+            widthInP = (int) (250 * scale + 0.5f);
+            hieghtInP = (int) (150 * scale + 0.5f);
+            pWtest = new PopupWindow(container, widthInP, hieghtInP, true);
+
         } else if (screenWidthDp <= 599) {
-            pWtest = new PopupWindow(container, 600, 600, true);
+            widthInP = (int) (300 * scale + 0.5f);
+            hieghtInP = (int) (150 * scale + 0.5f);
+            pWtest = new PopupWindow(container, widthInP, hieghtInP, true);
+
         } else if (screenWidthDp <= 719) {
-            pWtest = new PopupWindow(container, 450, 250, true);
+            widthInP = (int) (450 * scale + 0.5f);
+            hieghtInP = (int) (250 * scale + 0.5f);
+            pWtest = new PopupWindow(container, widthInP, hieghtInP, true);
+
         } else {
-            pWtest = new PopupWindow(container, 450, 250, true);
+            widthInP = (int) (450 * scale + 0.5f);
+            hieghtInP = (int) (250 * scale + 0.5f);
+            pWtest = new PopupWindow(container, widthInP, hieghtInP, true);
+
         }
 
         final PopupWindow pW = pWtest;

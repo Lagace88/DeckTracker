@@ -103,6 +103,10 @@ public class MainDisplay extends Activity {
         int screenWidthDp = configuration.screenWidthDp;
 
         if (screenWidthDp <= 359) {
+            // Set Percent Size.
+            CurrentWinRate.setTextSize(22);
+
+            // Set Text Size.
             if (Name.length() <= 10) {
                 Current.setTextSize(22);
             } else if (Name.length() <= 17) {
@@ -111,6 +115,8 @@ public class MainDisplay extends Activity {
                 Current.setTextSize(8);
             }
         } else if (screenWidthDp <= 400) {
+            CurrentWinRate.setTextSize(28);
+
             if (Name.length() <= 10) {
                 Current.setTextSize(28);
             } else if (Name.length() <= 17) {
@@ -119,6 +125,8 @@ public class MainDisplay extends Activity {
                 Current.setTextSize(9);
             }
         } else if (screenWidthDp <= 599) {
+            CurrentWinRate.setTextSize(32);
+
             if (Name.length() <= 10) {
                 Current.setTextSize(32);
             } else if (Name.length() <= 17) {
@@ -127,6 +135,8 @@ public class MainDisplay extends Activity {
                 Current.setTextSize(11);
             }
         } else if (screenWidthDp <= 719) {
+            CurrentWinRate.setTextSize(52);
+
             if (Name.length() <= 10) {
                 Current.setTextSize(52);
             } else if (Name.length() <= 17) {
@@ -135,6 +145,8 @@ public class MainDisplay extends Activity {
                 Current.setTextSize(20);
             }
         } else {
+            CurrentWinRate.setTextSize(61);
+
             if (Name.length() <= 10) {
                 Current.setTextSize(61);
             } else if (Name.length() <= 17) {

@@ -51,6 +51,10 @@ public class ListViewCustomAdapterFacedDecks extends CursorAdapter {
         int screenWidthDp = configuration.screenWidthDp;
 
         if (screenWidthDp <= 359) {
+            // Set Percent Size
+            winRate.setTextSize(25);
+
+            // Set Name Size
             if (Name.length() <= 10) {
                 facedDeckName.setTextSize(25);
             } else if (Name.length() <= 17) {
@@ -59,6 +63,8 @@ public class ListViewCustomAdapterFacedDecks extends CursorAdapter {
                 facedDeckName.setTextSize(9);
             }
         } else if (screenWidthDp <= 400) {
+            winRate.setTextSize(28);
+
             if (Name.length() <= 10) {
                 facedDeckName.setTextSize(28);
             } else if (Name.length() <= 17) {
@@ -67,6 +73,8 @@ public class ListViewCustomAdapterFacedDecks extends CursorAdapter {
                 facedDeckName.setTextSize(9);
             }
         } else if (screenWidthDp <= 599) {
+            winRate.setTextSize(33);
+
             if (Name.length() <= 10) {
                 facedDeckName.setTextSize(33);
             } else if (Name.length() <= 17) {
@@ -75,6 +83,8 @@ public class ListViewCustomAdapterFacedDecks extends CursorAdapter {
                 facedDeckName.setTextSize(11);
             }
         } else if (screenWidthDp <= 719) {
+            winRate.setTextSize(52);
+
             if (Name.length() <= 10) {
                 facedDeckName.setTextSize(52);
             } else if (Name.length() <= 17) {
@@ -83,6 +93,8 @@ public class ListViewCustomAdapterFacedDecks extends CursorAdapter {
                 facedDeckName.setTextSize(18);
             }
         } else {
+            winRate.setTextSize(61);
+
             if (Name.length() <= 10) {
                 facedDeckName.setTextSize(61);
             } else if (Name.length() <= 17) {

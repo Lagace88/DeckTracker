@@ -50,6 +50,10 @@ public class ListViewCustomAdapterUserDecks extends CursorAdapter {
         int screenWidthDp = configuration.screenWidthDp;
 
         if (screenWidthDp <= 359) {
+            // Set Percent Size
+            txt_UserDeckWinRate.setTextSize(23);
+
+            // Set Name Size
             if (Name.length() <= 10) {
                 txt_UserDeck.setTextSize(23);
             } else if (Name.length() <= 17) {
@@ -58,6 +62,8 @@ public class ListViewCustomAdapterUserDecks extends CursorAdapter {
                 txt_UserDeck.setTextSize(8);
             }
         } else if (screenWidthDp <= 400) {
+            txt_UserDeckWinRate.setTextSize(26);
+
             if (Name.length() <= 10) {
                 txt_UserDeck.setTextSize(26);
             } else if (Name.length() <= 17) {
@@ -66,6 +72,8 @@ public class ListViewCustomAdapterUserDecks extends CursorAdapter {
                 txt_UserDeck.setTextSize(9);
             }
         } else if (screenWidthDp <= 599) {
+            txt_UserDeckWinRate.setTextSize(31);
+
             if (Name.length() <= 10) {
                 txt_UserDeck.setTextSize(31);
             } else if (Name.length() <= 17) {
@@ -74,6 +82,8 @@ public class ListViewCustomAdapterUserDecks extends CursorAdapter {
                 txt_UserDeck.setTextSize(11);
             }
         } else if (screenWidthDp <= 719) {
+            txt_UserDeckWinRate.setTextSize(52);
+
             if (Name.length() <= 10) {
                 txt_UserDeck.setTextSize(52);
             } else if (Name.length() <= 17) {
@@ -82,6 +92,8 @@ public class ListViewCustomAdapterUserDecks extends CursorAdapter {
                 txt_UserDeck.setTextSize(18);
             }
         } else {
+            txt_UserDeckWinRate.setTextSize(61);
+
             if (Name.length() <= 10) {
                 txt_UserDeck.setTextSize(61);
             } else if (Name.length() <= 17) {
