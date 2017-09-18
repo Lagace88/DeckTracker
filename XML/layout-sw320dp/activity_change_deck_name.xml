@@ -34,7 +34,8 @@
         android:layout_below="@+id/editNewName"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="30dp"
-        android:text="Done" />
+        android:text="Done"
+        android:singleLine="true" />
 
     <Button
         android:id="@+id/btn_CNCancel"
@@ -45,5 +46,6 @@
         android:layout_below="@+id/editNewName"
         android:layout_marginRight="10dp"
         android:layout_marginTop="30dp"
-        android:text="Cancel" />
+        android:text="Cancel"
+        android:singleLine="true" />
 </RelativeLayout>

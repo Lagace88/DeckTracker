@@ -42,7 +42,8 @@
         android:layout_centerVertical="true"
         android:height="70dp"
         android:text="Start"
-        android:textSize="35dp" />
+        android:textSize="35dp"
+        android:singleLine="true" />
 
     <Button
         android:id="@+id/btnOptions"
@@ -53,7 +54,8 @@
         android:layout_marginTop="20dp"
         android:height="70dp"
         android:text="Options"
-        android:textSize="35dp" />
+        android:textSize="35dp"
+        android:singleLine="true" />
 
     <Button
         android:id="@+id/btnExit"
@@ -67,6 +69,7 @@
         android:layout_marginTop="20dp"
         android:height="70dp"
         android:text="Exit"
-        android:textSize="35dp" />
+        android:textSize="35dp"
+        android:singleLine="true" />
 
 </RelativeLayout>

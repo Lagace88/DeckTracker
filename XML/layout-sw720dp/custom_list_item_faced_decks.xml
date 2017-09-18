@@ -13,7 +13,9 @@
         android:gravity="center"
         android:text="TextView"
         android:textAlignment="center"
-        android:textSize="20dp" />
+        android:autoSizeTextType="uniform"
+        android:maxLines="2"
+        android:autoSizeMinTextSize="1sp" />
 
     <TextView
         android:id="@+id/txtWinRate"
@@ -26,6 +28,8 @@
         android:gravity="center"
         android:text="50%"
         android:textAlignment="center"
-        android:textSize="50dp" />
+        android:autoSizeTextType="uniform"
+        android:maxLines="2"
+        android:autoSizeMinTextSize="1sp" />
 
 </RelativeLayout>

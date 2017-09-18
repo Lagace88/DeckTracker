@@ -50,7 +50,8 @@
         android:layout_marginTop="20dp"
         android:width="350dp"
         android:text="Credits"
-        android:textSize="30dp" />
+        android:textSize="30dp"
+        android:singleLine="true" />
 
     <Button
         android:id="@+id/btnBack"
@@ -63,6 +64,7 @@
         android:layout_marginTop="20dp"
         android:width="350dp"
         android:text="Back"
-        android:textSize="30dp" />
+        android:textSize="30dp"
+        android:singleLine="true" />
 
 </RelativeLayout>

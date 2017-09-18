@@ -15,9 +15,11 @@
         android:text="Deck"
         android:textAlignment="center"
         android:textColor="@android:color/darker_gray"
-        android:textSize="40dp"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:autoSizeTextType="uniform"
+        android:maxLines="2"
+        android:autoSizeMinTextSize="1sp" />
 
     <Button
         android:id="@+id/btn_ChangeName"
@@ -28,7 +30,8 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="20dp"
-        android:text="Change Deck Name" />
+        android:text="Change Deck Name"
+        android:singleLine="true" />
 
     <Button
         android:id="@+id/btn_ChangeTextColor"
@@ -39,7 +42,8 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="15dp"
-        android:text="Change Text Color" />
+        android:text="Change Text Color"
+        android:singleLine="true" />
 
     <Button
         android:id="@+id/btn_ChangeBackgroundColor"
@@ -51,7 +55,8 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="15dp"
-        android:text="Change Backgrround Color" />
+        android:text="Change Backgrround Color"
+        android:singleLine="true" />
 
     <Button
         android:id="@+id/btn_DeletePastWinLoss"
@@ -63,7 +68,8 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="15dp"
-        android:text="Delete Past Win Loss Ratio" />
+        android:text="Delete Past Win Loss Ratio"
+        android:singleLine="true" />
 
     <Button
         android:id="@+id/btn_DeleteDeck"
@@ -75,7 +81,8 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="15dp"
-        android:text="Delete Deck" />
+        android:text="Delete Deck"
+        android:singleLine="true" />
 
     <Button
         android:id="@+id/btn_Back"
@@ -86,5 +93,6 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="15dp"
-        android:text="Back" />
+        android:text="Back"
+        android:singleLine="true" />
 </RelativeLayout>

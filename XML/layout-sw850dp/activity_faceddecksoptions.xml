@@ -17,7 +17,9 @@
         android:text="Deck"
         android:textAlignment="center"
         android:textColor="@android:color/darker_gray"
-        android:textSize="70dp" />
+        android:autoSizeTextType="uniform"
+        android:maxLines="2"
+        android:autoSizeMinTextSize="1sp" />
 
     <Button
         android:id="@+id/btn_ChangeName"
@@ -29,7 +31,8 @@
         android:layout_marginRight="70dp"
         android:layout_marginTop="50dp"
         android:text="Change Deck Name"
-        android:textSize="55dp" />
+        android:textSize="55dp"
+        android:singleLine="true" />
 
     <Button
         android:id="@+id/btn_ChangeTextColor"
@@ -41,7 +44,8 @@
         android:layout_marginRight="70dp"
         android:layout_marginTop="50dp"
         android:text="Change Text Color"
-        android:textSize="55dp" />
+        android:textSize="55dp"
+        android:singleLine="true" />
 
     <Button
         android:id="@+id/btn_ChangeBackgroundColor"
@@ -54,7 +58,8 @@
         android:layout_marginRight="70dp"
         android:layout_marginTop="50dp"
         android:text="Change Backgrround Color"
-        android:textSize="55dp" />
+        android:textSize="55dp"
+        android:singleLine="true" />
 
     <Button
         android:id="@+id/btn_DeletePastWinLoss"
@@ -67,7 +72,8 @@
         android:layout_marginRight="70dp"
         android:layout_marginTop="50dp"
         android:text="Delete Past Win Loss Ratio"
-        android:textSize="55dp" />
+        android:textSize="55dp"
+        android:singleLine="true" />
 
     <Button
         android:id="@+id/btn_DeleteDeck"
@@ -80,7 +86,8 @@
         android:layout_marginRight="70dp"
         android:layout_marginTop="50dp"
         android:text="Delete Deck"
-        android:textSize="55dp" />
+        android:textSize="55dp"
+        android:singleLine="true" />
 
     <Button
         android:id="@+id/btn_Back"
@@ -92,5 +99,6 @@
         android:layout_marginRight="70dp"
         android:layout_marginTop="50dp"
         android:text="Back"
-        android:textSize="55dp" />
+        android:textSize="55dp"
+        android:singleLine="true" />
 </RelativeLayout>

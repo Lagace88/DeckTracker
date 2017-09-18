@@ -29,7 +29,9 @@
         android:gravity="center"
         android:text="TextView"
         android:textAlignment="center"
-        android:textSize="30sp" />
+        android:autoSizeTextType="uniform"
+        android:maxLines="2"
+        android:autoSizeMinTextSize="1sp" />
 
     <TextView
         android:id="@+id/txtFacedDecks"
@@ -59,7 +61,8 @@
         android:layout_toLeftOf="@+id/txtCurrentRecomend"
         android:layout_toStartOf="@+id/txtCurrentRecomend"
         android:text="Add Deck"
-        android:textSize="25dp" />
+        android:textSize="25dp"
+        android:singleLine="true" />
 
     <Button
         android:id="@+id/btnBack"
@@ -69,7 +72,8 @@
         android:layout_toEndOf="@+id/txtFacedDecks"
         android:layout_toRightOf="@+id/txtFacedDecks"
         android:text="Back"
-        android:textSize="25dp" />
+        android:textSize="25dp"
+        android:singleLine="true" />
 
     <Button
         android:id="@+id/btnUserDeckOptions"
@@ -78,7 +82,8 @@
         android:layout_below="@+id/facedDecks"
         android:layout_centerHorizontal="true"
         android:text="Options"
-        android:textSize="25dp" />
+        android:textSize="25dp"
+        android:singleLine="true" />
 
     <TextView
         android:id="@+id/txt_CurrentDeckWinRate"
@@ -93,6 +98,8 @@
         android:gravity="center"
         android:text="TextView"
         android:textAlignment="center"
-        android:textSize="50dp" />
+        android:autoSizeTextType="uniform"
+        android:maxLines="2"
+        android:autoSizeMinTextSize="1sp" />
 
 </RelativeLayout>

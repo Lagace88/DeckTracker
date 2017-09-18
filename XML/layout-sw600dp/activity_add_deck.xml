@@ -118,7 +118,8 @@
         android:layout_toLeftOf="@+id/textName"
         android:layout_toStartOf="@+id/textName"
         android:text="Done"
-        android:textSize="40dp" />
+        android:textSize="40dp"
+        android:singleLine="true" />
 
     <Button
         android:id="@+id/btnBack"
@@ -130,6 +131,7 @@
         android:layout_marginRight="40dp"
         android:layout_marginTop="30dp"
         android:text="Back"
-        android:textSize="40dp" />
+        android:textSize="40dp"
+        android:singleLine="true" />
 
 </RelativeLayout>

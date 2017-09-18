@@ -28,11 +28,12 @@
         android:layout_toLeftOf="@+id/txt_CurrentDeckWinRate"
         android:clickable="true"
         android:gravity="center"
-        android:text="TextView"
         android:textAlignment="center"
         android:textColor="@android:color/darker_gray"
-        android:textSize="30dp"
-        tools:text="Test" />
+        tools:text="Test"
+        android:autoSizeTextType="uniform"
+        android:maxLines="1"
+        android:autoSizeMinTextSize="1sp" />
 
     <TextView
         android:id="@+id/txtFacedDecks"
@@ -63,7 +64,8 @@
         android:layout_alignBaseline="@+id/btnUserDeckOptions"
         android:layout_alignBottom="@+id/btnUserDeckOptions"
         android:layout_toLeftOf="@+id/btnUserDeckOptions"
-        android:layout_toStartOf="@+id/btnUserDeckOptions" />
+        android:layout_toStartOf="@+id/btnUserDeckOptions"
+        android:singleLine="true" />
 
     <Button
         android:id="@+id/btnBack"
@@ -73,7 +75,8 @@
         android:textSize="15sp"
         android:layout_below="@+id/facedDecks"
         android:layout_toRightOf="@+id/btnUserDeckOptions"
-        android:layout_toEndOf="@+id/btnUserDeckOptions" />
+        android:layout_toEndOf="@+id/btnUserDeckOptions"
+        android:singleLine="true" />
 
     <Button
         android:id="@+id/btnUserDeckOptions"
@@ -82,7 +85,8 @@
         android:layout_below="@+id/facedDecks"
         android:layout_centerHorizontal="true"
         android:text="Options"
-        android:textSize="15sp" />
+        android:textSize="15sp"
+        android:singleLine="true" />
 
     <TextView
         android:id="@+id/txt_CurrentDeckWinRate"
@@ -98,6 +102,8 @@
         android:text="100%"
         android:textAlignment="center"
         android:textColor="@android:color/darker_gray"
-        android:textSize="30dp" />
+        android:autoSizeTextType="uniform"
+        android:maxLines="2"
+        android:autoSizeMinTextSize="1sp"/>
 
 </RelativeLayout>

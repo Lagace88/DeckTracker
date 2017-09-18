@@ -37,7 +37,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:text="Add Deck"
-        android:textSize="20dp" />
+        android:textSize="20dp"
+        android:singleLine="true" />
 
     <Button
         android:id="@+id/btnBack"
@@ -47,7 +48,8 @@
         android:textSize="20dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:singleLine="true" />
 
     <TextView
         android:id="@+id/txt_RecomendedDeck"
@@ -59,7 +61,9 @@
         android:text="No Decks Have Been Faced Yet"
         android:textAlignment="center"
         android:textColor="@android:color/darker_gray"
-        android:textSize="20dp" />
+        android:autoSizeTextType="uniform"
+        android:maxLines="2"
+        android:autoSizeMinTextSize="1sp" />
 
     <TextView
         android:id="@+id/textView7"

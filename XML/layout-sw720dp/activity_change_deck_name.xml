@@ -35,7 +35,8 @@
         android:layout_marginLeft="20dp"
         android:layout_marginTop="30dp"
         android:text="Done"
-        android:textSize="55dp" />
+        android:textSize="55dp"
+        android:singleLine="true" />
 
     <Button
         android:id="@+id/btn_CNCancel"
@@ -47,5 +48,6 @@
         android:layout_marginRight="20dp"
         android:layout_marginTop="30dp"
         android:text="Cancel"
-        android:textSize="55dp" />
+        android:textSize="55dp"
+        android:singleLine="true" />
 </RelativeLayout>
