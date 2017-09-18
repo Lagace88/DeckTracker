@@ -25,10 +25,10 @@ public class WinLoss extends Activity {
         setContentView(R.layout.activity_modify_faceddeck);
 
         // Declare Buttons
-        Button Win = (Button) findViewById(R.id.btn_Win);
-        Button Loss = (Button) findViewById(R.id.btn_Loss);
-        Button Options = (Button) findViewById(R.id.btn_Options);
-        Button Back = (Button) findViewById(R.id.btn_Back);
+        Button Win = findViewById(R.id.btn_Win);
+        Button Loss = findViewById(R.id.btn_Loss);
+        Button Options = findViewById(R.id.btn_Options);
+        Button Back = findViewById(R.id.btn_Back);
 
         // Listener Events For Buttons
         Win.setOnClickListener(toggleWin);
@@ -38,7 +38,7 @@ public class WinLoss extends Activity {
 
         // Populate Current Deck
         UserDeck = getIntent().getStringExtra("UserDeckName");
-        UserDeck = "[" + UserDeck + "]";
+        Toast.makeText(WinLoss.this, UserDeck, Toast.LENGTH_SHORT).show();
         Position = getIntent().getIntExtra("Position", 0);
         UserPosition = getIntent().getIntExtra("UserPosition", 0);
         db = new DBAdapter(this);
@@ -48,18 +48,18 @@ public class WinLoss extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        populate();
+      //  populate();
     }
 
     public void populate() {
         // Populate
 
         // TextView Declares
-        TextView DisplayDeckName = (TextView) findViewById(R.id.txt_FacedDeck);
-        TextView TimesFaced = (TextView) findViewById(R.id.result_TimesFaced);
-        TextView Wins = (TextView) findViewById(R.id.result_Wins);
-        TextView Loses = (TextView) findViewById(R.id.result_Loses);
-        TextView WinRate = (TextView) findViewById(R.id.result_WinRate);
+        TextView DisplayDeckName = findViewById(R.id.txt_FacedDeck);
+        TextView TimesFaced = findViewById(R.id.result_TimesFaced);
+        TextView Wins = findViewById(R.id.result_Wins);
+        TextView Loses = findViewById(R.id.result_Loses);
+        TextView WinRate = findViewById(R.id.result_WinRate);
 
         // Retrieve information from db
         db.open();
@@ -70,54 +70,8 @@ public class WinLoss extends Activity {
         DisplayDeckName.setTextColor(Color.parseColor(cOne.getString(cOne.getColumnIndexOrThrow("textcolor"))));
         DisplayDeckName.setBackgroundColor(Color.parseColor(cOne.getString(cOne.getColumnIndexOrThrow("bgcolor"))));
 
-        // Set text size for DisplayDeckName
-        Configuration configuration = this.getResources().getConfiguration();
-        int screenWidthDp = configuration.screenWidthDp;
 
-        if (screenWidthDp <= 359) {
-            if (Name.length() <= 10) {
-                DisplayDeckName.setTextSize(30);
-            } else if (Name.length() <= 17) {
-                DisplayDeckName.setTextSize(18);
-            } else if (Name.length() <= 28) {
-                DisplayDeckName.setTextSize(11);
-            }
-        } else if (screenWidthDp <= 400) {
-            if (Name.length() <= 10) {
-                DisplayDeckName.setTextSize(35);
-            } else if (Name.length() <= 17) {
-                DisplayDeckName.setTextSize(21);
-            } else if (Name.length() <= 28) {
-                DisplayDeckName.setTextSize(12);
-            }
-        } else if (screenWidthDp <= 599) {
-            if (Name.length() <= 10) {
-                DisplayDeckName.setTextSize(40);
-            } else if (Name.length() <= 17) {
-                DisplayDeckName.setTextSize(24);
-            } else if (Name.length() <= 28) {
-                DisplayDeckName.setTextSize(15);
-            }
-        } else if (screenWidthDp <= 719) {
-            if (Name.length() <= 10) {
-                DisplayDeckName.setTextSize(52);
-            } else if (Name.length() <= 17) {
-                DisplayDeckName.setTextSize(31);
-            } else if (Name.length() <= 28) {
-                DisplayDeckName.setTextSize(20);
-            }
-        } else {
-            if (Name.length() <= 10) {
-                DisplayDeckName.setTextSize(61);
-            } else if (Name.length() <= 17) {
-                DisplayDeckName.setTextSize(36);
-            } else if (Name.length() <= 28) {
-                DisplayDeckName.setTextSize(27);
-            }
-        }
-
-
-        Cursor cTwo = db.getRow(Position, UserDeck, 2);
+        Cursor cTwo = db.getRow(Position, '[' + UserDeck + ']', 2);
         db.close();
 
         int wins = cTwo.getInt(cTwo.getColumnIndexOrThrow("wins"));
@@ -145,10 +99,10 @@ public class WinLoss extends Activity {
                 public void onClick(View v) {
                     // Update database for a win.
                     db.open();
-                    Cursor cursor = db.getRow(Position, UserDeck, 2);
+                    Cursor cursor = db.getRow(Position, '[' + UserDeck + ']', 2);
                     int wins = cursor.getInt(cursor.getColumnIndexOrThrow("wins"));
                     wins++;
-                    db.updateWins(Position, wins, UserDeck);
+                    db.updateWins(Position, wins, '[' + UserDeck + ']');
                     calculateNewWinRate();
                     db.updateWinRate(calculateNewWinRate(), UserPosition);
                     manageRecommended();
@@ -164,10 +118,10 @@ public class WinLoss extends Activity {
                 public void onClick(View v) {
                     // Update Database for a Loss
                     db.open();
-                    Cursor cursor = db.getRow(Position, UserDeck, 2);
+                    Cursor cursor = db.getRow(Position, '[' + UserDeck + ']', 2);
                     int losses = cursor.getInt(cursor.getColumnIndexOrThrow("losses"));
                     losses++;
-                    db.updateLoses(Position, losses, UserDeck);
+                    db.updateLoses(Position, losses, '[' + UserDeck + ']');
                     db.updateWinRate(calculateNewWinRate(), UserPosition);
                     cursor.close();
                     manageRecommended();
@@ -178,7 +132,7 @@ public class WinLoss extends Activity {
             };
 
     public int calculateNewWinRate() {
-        Cursor cursor = db.getAllRows(UserDeck, 2);
+        Cursor cursor = db.getAllRows('[' + UserDeck + ']', 2);
         cursor.moveToFirst();
         double wins = 0;
         double losses = 0;

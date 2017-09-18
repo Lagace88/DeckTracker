@@ -166,52 +166,6 @@ public class UserDeckDisplay extends Activity {
             recommendedText.setTextColor(parseColor(userDeckCursor.getString(userDeckCursor.getColumnIndexOrThrow("textcolor"))));
             recommendedText.setBackgroundColor(parseColor(userDeckCursor.getString(userDeckCursor.getColumnIndexOrThrow("bgcolor"))));
             userDeckCursor.close();
-
-            // Set Text Size.
-            Configuration configuration = this.getResources().getConfiguration();
-            int screenWidthDp = configuration.screenWidthDp;
-
-            if (screenWidthDp <= 359) {
-                if (Name.length() <= 10) {
-                    recommendedText.setTextSize(30);
-                } else if (Name.length() <= 17) {
-                    recommendedText.setTextSize(18);
-                } else if (Name.length() <= 28) {
-                    recommendedText.setTextSize(11);
-                }
-            } else if (screenWidthDp <= 400) {
-                if (Name.length() <= 10) {
-                    recommendedText.setTextSize(35);
-                } else if (Name.length() <= 17) {
-                    recommendedText.setTextSize(21);
-                } else if (Name.length() <= 28) {
-                    recommendedText.setTextSize(12);
-                }
-            } else if (screenWidthDp <= 599) {
-                if (Name.length() <= 10) {
-                    recommendedText.setTextSize(40);
-                } else if (Name.length() <= 17) {
-                    recommendedText.setTextSize(24);
-                } else if (Name.length() <= 28) {
-                    recommendedText.setTextSize(15);
-                }
-            } else if (screenWidthDp <= 719) {
-                if (Name.length() <= 10) {
-                    recommendedText.setTextSize(52);
-                } else if (Name.length() <= 17) {
-                    recommendedText.setTextSize(31);
-                } else if (Name.length() <= 28) {
-                    recommendedText.setTextSize(20);
-                }
-            } else {
-                if (Name.length() <= 10) {
-                    recommendedText.setTextSize(61);
-                } else if (Name.length() <= 17) {
-                    recommendedText.setTextSize(36);
-                } else if (Name.length() <= 28) {
-                    recommendedText.setTextSize(27);
-                }
-            }
         }
 
         db.close();

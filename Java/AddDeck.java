@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class AddDeck extends Activity {
@@ -35,8 +36,8 @@ public class AddDeck extends Activity {
         ImageView TextColor = (ImageView) findViewById(R.id.imgTextColor);
 
         // Declare Buttons
-        Button Done = (Button) findViewById(R.id.btnDone);
-        Button Back = (Button) findViewById(R.id.btnBack);
+        Button Done = findViewById(R.id.btnDone);
+        Button Back = findViewById(R.id.btnBack);
 
         // Listener Events for Image Buttons
         BackgroundColor.setOnClickListener(toggleBackgroundColor);

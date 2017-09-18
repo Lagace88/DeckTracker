@@ -101,18 +101,7 @@ public class DBAdapter {
 		String where = KEY_DECKID + "=" + rowId;
 		return db.delete(table, where, null) != 0;
 	}
-	
-	public void deleteAll(String table) {
-		Cursor c = getAllRows("USERDECKS", 0);
-		long rowId = c.getColumnIndexOrThrow(KEY_DECKID);
-		if (c.moveToFirst()) {
-			do {
-				deleteRow(c.getLong((int) rowId), table);
-			} while (c.moveToNext());
-		}
-		c.close();
-	}
-	
+
 	// Return all data in the database.
 	public  Cursor getAllRows(String table, int TableType) {
 		// 0 == USEERDECK

@@ -71,7 +71,7 @@ public class FDOptions extends Activity {
     }
 
     public void populate() {
-        TextView current = (TextView) findViewById(R.id.txt_FDODeck);
+        TextView current = findViewById(R.id.txt_FDODeck);
 
         String Name = "";
         db.open();
@@ -90,52 +90,6 @@ public class FDOptions extends Activity {
             current.setBackgroundColor(Color.parseColor(c.getString(c.getColumnIndexOrThrow("bgcolor"))));
         }
         db.close();
-
-        // Set appropriate text size.
-        Configuration configuration = this.getResources().getConfiguration();
-        int screenWidthDp = configuration.screenWidthDp;
-
-        if (screenWidthDp <= 359) {
-            if (Name.length() <= 10) {
-                current.setTextSize(30);
-            } else if (Name.length() <= 17) {
-                current.setTextSize(18);
-            } else if (Name.length() <= 28) {
-                current.setTextSize(11);
-            }
-        } else if (screenWidthDp <= 400) {
-            if (Name.length() <= 10) {
-                current.setTextSize(35);
-            } else if (Name.length() <= 17) {
-                current.setTextSize(21);
-            } else if (Name.length() <= 28) {
-                current.setTextSize(12);
-            }
-        } else if (screenWidthDp <= 599) {
-            if (Name.length() <= 10) {
-                current.setTextSize(40);
-            } else if (Name.length() <= 17) {
-                current.setTextSize(24);
-            } else if (Name.length() <= 28) {
-                current.setTextSize(15);
-            }
-        } else if (screenWidthDp <= 719) {
-            if (Name.length() <= 10) {
-                current.setTextSize(52);
-            } else if (Name.length() <= 17) {
-                current.setTextSize(31);
-            } else if (Name.length() <= 28) {
-                current.setTextSize(20);
-            }
-        } else {
-            if (Name.length() <= 10) {
-                current.setTextSize(61);
-            } else if (Name.length() <= 17) {
-                current.setTextSize(36);
-            } else if (Name.length() <= 28) {
-                current.setTextSize(27);
-            }
-        }
     }
 
     private final View.OnClickListener toggleCDeckName =
