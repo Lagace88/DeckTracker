@@ -58,7 +58,7 @@
         android:textSize="20dp"
         android:singleLine="true" />
 
-    <TextView
+    <com.tool.dirtytgaming.decktrackerpro.AutoResizeTextView
         android:id="@+id/txt_RecomendedDeck"
         android:layout_width="275dp"
         android:layout_height="50dp"
@@ -69,7 +69,8 @@
         android:textAlignment="center"
         android:textColor="@android:color/darker_gray"
         android:autoSizeTextType="uniform"
-        android:maxLines="2"
-        android:autoSizeMinTextSize="1sp" />
+        android:maxLines="1"
+        android:autoSizeMinTextSize="1sp"
+        android:textSize="200dp" />
 
 </RelativeLayout>

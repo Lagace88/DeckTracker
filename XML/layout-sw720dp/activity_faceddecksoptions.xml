@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@android:color/background_dark">
 
-    <TextView
+    <com.tool.dirtytgaming.decktrackerpro.AutoResizeTextView
         android:id="@+id/txt_FDODeck"
         android:layout_width="625dp"
         android:layout_height="100dp"
@@ -19,7 +19,8 @@
         android:textColor="@android:color/darker_gray"
         android:autoSizeTextType="uniform"
         android:maxLines="2"
-        android:autoSizeMinTextSize="1sp" />
+        android:autoSizeMinTextSize="1sp"
+        android:textSize="200dp" />
 
     <Button
         android:id="@+id/btn_ChangeName"

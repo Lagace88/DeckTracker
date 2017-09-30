@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent">
 
-    <TextView
+    <com.tool.dirtytgaming.decktrackerpro.AutoResizeTextView
         android:id="@+id/txtFacedDeckName"
         android:layout_width="300dp"
         android:layout_height="60dp"
@@ -15,10 +15,11 @@
         android:text="TextView"
         android:textAlignment="center"
         android:autoSizeTextType="uniform"
-        android:maxLines="2"
-        android:autoSizeMinTextSize="1sp" />
+        android:maxLines="1"
+        android:autoSizeMinTextSize="1sp"
+        android:textSize="200dp" />
 
-    <TextView
+    <com.tool.dirtytgaming.decktrackerpro.AutoResizeTextView
         android:id="@+id/txtWinRate"
         android:layout_width="match_parent"
         android:layout_height="60dp"
@@ -30,7 +31,8 @@
         android:text="50%"
         android:textAlignment="center"
         android:autoSizeTextType="uniform"
-        android:maxLines="2"
-        android:autoSizeMinTextSize="1sp" />
+        android:maxLines="1"
+        android:autoSizeMinTextSize="1sp"
+        android:textSize="200dp" />
 
 </RelativeLayout>

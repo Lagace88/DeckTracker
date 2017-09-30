@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/background_dark">
+    android:background="@android:color/background_dark"
+    android:id="@+id/OptionsLayout">
 
     <TextView
         android:id="@+id/rextOptions"
@@ -23,7 +24,7 @@
         android:layout_below="@+id/rextOptions"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="23dp"
-        android:text="Part Game Capacity : 1 - 100"
+        android:text="Recommendation : 1 - 100"
         android:textColor="@android:color/darker_gray"
         android:textSize="30dp" />
 
@@ -58,14 +59,27 @@
         android:id="@+id/btnBack"
         android:layout_width="400dp"
         android:layout_height="70dp"
-        android:layout_alignLeft="@+id/btnCredits"
-        android:layout_alignStart="@+id/btnCredits"
-        android:layout_below="@+id/btnCredits"
         android:layout_gravity="center_horizontal|bottom"
-        android:layout_marginTop="25dp"
         android:width="350dp"
         android:text="Back"
         android:textSize="40dp"
-        android:singleLine="true" />
+        android:singleLine="true"
+        android:layout_below="@+id/btnDeleteDB"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp" />
+
+    <Button
+        android:id="@+id/btnDeleteDB"
+        android:layout_width="400dp"
+        android:layout_height="70dp"
+        android:layout_gravity="center_horizontal|bottom"
+        android:width="350dp"
+        android:text="Delete Database"
+        android:textSize="40dp"
+        android:singleLine="true"
+        android:layout_below="@+id/btnCredits"
+        android:layout_alignLeft="@+id/btnCredits"
+        android:layout_alignStart="@+id/btnCredits"
+        android:layout_marginTop="25dp" />
 
 </RelativeLayout>

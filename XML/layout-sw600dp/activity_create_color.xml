@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="@android:color/background_dark">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Create A Color"
+        android:id="@+id/textView8"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:textSize="70dp"
+        android:layout_marginTop="5dp"
+        android:textColor="@android:color/darker_gray"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Red:"
+        android:id="@+id/textView9"
+        android:textSize="50dp"
+        android:textColor="@android:color/darker_gray"
+        android:layout_below="@+id/textView8"
+        android:layout_alignRight="@+id/textView10"
+        android:layout_alignEnd="@+id/textView10"
+        android:layout_marginTop="20dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Green:"
+        android:id="@+id/textView10"
+        android:textSize="50dp"
+        android:textColor="@android:color/darker_gray"
+        android:layout_below="@+id/textView9"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="15dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Blue:"
+        android:id="@+id/textView11"
+        android:textSize="50dp"
+        android:textColor="@android:color/darker_gray"
+        android:layout_below="@+id/textView10"
+        android:layout_alignRight="@+id/textView10"
+        android:layout_alignEnd="@+id/textView10"
+        android:layout_marginTop="15dp" />
+
+    <SeekBar
+        android:layout_width="400dp"
+        android:layout_height="40dp"
+        android:id="@+id/sbRed"
+        android:layout_alignTop="@+id/textView9"
+        android:layout_toRightOf="@+id/textView9"
+        android:layout_toEndOf="@+id/textView9"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:background="@android:color/background_light"
+        android:thumbTint="@android:color/holo_red_dark"
+        android:max="255"
+        android:progress="0"
+        android:focusableInTouchMode="false"
+        android:indeterminate="false"
+        android:focusable="true" />
+
+    <SeekBar
+        android:layout_width="400dp"
+        android:layout_height="40dp"
+        android:id="@+id/sbGreen"
+        android:layout_alignTop="@+id/textView10"
+        android:layout_alignLeft="@+id/sbRed"
+        android:layout_alignStart="@+id/sbRed"
+        android:layout_marginTop="10dp"
+        android:background="@android:color/background_light"
+        android:thumbTint="@android:color/holo_green_dark"
+        android:progress="0"
+        android:max="255" />
+
+    <SeekBar
+        android:layout_width="400dp"
+        android:layout_height="40dp"
+        android:id="@+id/sbBlue"
+        android:layout_alignTop="@+id/textView11"
+        android:layout_alignLeft="@+id/sbGreen"
+        android:layout_alignStart="@+id/sbGreen"
+        android:layout_marginTop="10dp"
+        android:background="@android:color/background_light"
+        android:thumbTint="@android:color/holo_blue_dark"
+        android:max="255"
+        android:progress="0" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Red:"
+        android:id="@+id/textView12"
+        android:textSize="50dp"
+        android:textColor="@android:color/darker_gray"
+        android:layout_below="@+id/textView11"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="70dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Green:"
+        android:id="@+id/textView13"
+        android:textSize="50dp"
+        android:textColor="@android:color/darker_gray"
+        android:layout_alignTop="@+id/textView12"
+        android:layout_toRightOf="@+id/editRed"
+        android:layout_toEndOf="@+id/editRed"
+        android:layout_marginLeft="10dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Blue:"
+        android:id="@+id/textView14"
+        android:textSize="50dp"
+        android:textColor="@android:color/darker_gray"
+        android:layout_below="@+id/textView13"
+        android:layout_toRightOf="@+id/textView9"
+        android:layout_toEndOf="@+id/textView9"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="20dp" />
+
+    <Button
+        android:layout_width="150dp"
+        android:layout_height="60dp"
+        android:text="Done"
+        android:id="@+id/btnCreateColorDone"
+        android:layout_marginTop="50dp"
+        android:layout_below="@+id/imgCreateColor"
+        android:layout_toLeftOf="@+id/btnSelectColor"
+        android:layout_toStartOf="@+id/btnSelectColor"
+        android:layout_marginRight="20dp" />
+
+    <Button
+        android:layout_width="200dp"
+        android:layout_height="60dp"
+        android:text="Select Color"
+        android:id="@+id/btnSelectColor"
+        android:layout_alignTop="@+id/btnCreateColorDone"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="150dp"
+        android:layout_height="60dp"
+        android:text="Cancel"
+        android:id="@+id/btnCreateColorCancel"
+        android:layout_alignTop="@+id/btnSelectColor"
+        android:layout_toRightOf="@+id/btnSelectColor"
+        android:layout_toEndOf="@+id/btnSelectColor"
+        android:layout_marginLeft="20dp" />
+
+    <EditText
+        android:layout_width="90dp"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="10"
+        android:id="@+id/editRed"
+        android:background="@android:color/background_light"
+        android:gravity="center"
+        android:layout_above="@+id/textView14"
+        android:layout_toRightOf="@+id/textView12"
+        android:layout_toEndOf="@+id/textView12"
+        android:layout_marginLeft="10dp"
+        android:numeric="integer"
+        android:text="0"
+        android:textSize="50sp" />
+
+    <EditText
+        android:layout_width="90dp"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="10"
+        android:id="@+id/editGreen"
+        android:background="@android:color/background_light"
+        android:gravity="center"
+        android:layout_alignTop="@+id/textView13"
+        android:layout_toRightOf="@+id/textView13"
+        android:layout_toEndOf="@+id/textView13"
+        android:layout_marginLeft="10dp"
+        android:numeric="integer"
+        android:text="0"
+        android:textSize="50sp" />
+
+    <EditText
+        android:layout_width="90dp"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="10"
+        android:id="@+id/editBlue"
+        android:background="@android:color/background_light"
+        android:gravity="center"
+        android:numeric="integer"
+        android:text="0"
+        android:layout_alignTop="@+id/textView14"
+        android:layout_toRightOf="@+id/textView14"
+        android:layout_toEndOf="@+id/textView14"
+        android:layout_marginLeft="10dp"
+        android:textSize="50sp" />
+
+    <ImageView
+        android:layout_width="350dp"
+        android:layout_height="60dp"
+        android:id="@+id/imgCreateColor"
+        android:layout_below="@+id/textView14"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        android:background="@android:color/background_light" />
+</RelativeLayout>
