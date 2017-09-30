@@ -9,14 +9,12 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.PopupWindow;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class FDOptions extends Activity {
@@ -26,6 +24,7 @@ public class FDOptions extends Activity {
     int userPosition;
     String userDeckName;
     ProgressDialog deleteBar;
+    int[] color = new int[3];
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -33,12 +32,12 @@ public class FDOptions extends Activity {
         setContentView(R.layout.activity_faceddecksoptions);
 
         // Declare Buttons
-        Button CDeckName = (Button) findViewById(R.id.btn_ChangeName);
-        Button CTextColor = (Button) findViewById(R.id.btn_ChangeTextColor);
-        Button CBackgroundColor = (Button) findViewById(R.id.btn_ChangeBackgroundColor);
-        Button DPastWinLoss = (Button) findViewById(R.id.btn_DeletePastWinLoss);
-        Button DeleteDeck = (Button) findViewById(R.id.btn_DeleteDeck);
-        Button Back = (Button) findViewById(R.id.btn_Back);
+        Button CDeckName = findViewById(R.id.btn_ChangeName);
+        Button CTextColor = findViewById(R.id.btn_ChangeTextColor);
+        Button CBackgroundColor = findViewById(R.id.btn_ChangeBackgroundColor);
+        Button DPastWinLoss = findViewById(R.id.btn_DeletePastWinLoss);
+        Button DeleteDeck = findViewById(R.id.btn_DeleteDeck);
+        Button Back = findViewById(R.id.btn_Back);
 
         // Listener Events for Buttons
         CDeckName.setOnClickListener(toggleCDeckName);
@@ -71,23 +70,53 @@ public class FDOptions extends Activity {
     }
 
     public void populate() {
-        TextView current = findViewById(R.id.txt_FDODeck);
+        AutoResizeTextView current = findViewById(R.id.txt_FDODeck);
+
 
         String Name = "";
+
+        int Tred;
+        int Tgreen;
+        int Tblue;
+
+        int Bred;
+        int Bgreen;
+        int Bblue;
+
         db.open();
 
         if (facedDeck == true) {
             Cursor c = db.getRow(position, "FACEDDECKS", 1);
             Name = c.getString(c.getColumnIndexOrThrow("name"));
+
+            Tred = c.getInt(c.getColumnIndexOrThrow("tred"));
+            Tgreen = c.getInt(c.getColumnIndexOrThrow("tgreen"));
+            Tblue = c.getInt(c.getColumnIndexOrThrow("tblue"));
+
+            Bred = c.getInt(c.getColumnIndexOrThrow("bred"));
+            Bgreen = c.getInt(c.getColumnIndexOrThrow("bgreen"));
+            Bblue = c.getInt(c.getColumnIndexOrThrow("bblue"));
+
             current.setText(Name);
-            current.setTextColor(Color.parseColor(c.getString(c.getColumnIndexOrThrow("textcolor"))));
-            current.setBackgroundColor(Color.parseColor(c.getString(c.getColumnIndexOrThrow("bgcolor"))));
+            current.setTextColor(Color.rgb(Tred, Tgreen, Tblue));
+            current.setBackgroundColor(Color.rgb(Bred, Bgreen, Bblue));
+            c.close();
         } else {
             Cursor c = db.getRow(userPosition, "USERDECKS", 0);
             Name = c.getString(c.getColumnIndexOrThrow("name"));
+
+            Tred = c.getInt(c.getColumnIndexOrThrow("tred"));
+            Tgreen = c.getInt(c.getColumnIndexOrThrow("tgreen"));
+            Tblue = c.getInt(c.getColumnIndexOrThrow("tblue"));
+
+            Bred = c.getInt(c.getColumnIndexOrThrow("bred"));
+            Bgreen = c.getInt(c.getColumnIndexOrThrow("bgreen"));
+            Bblue = c.getInt(c.getColumnIndexOrThrow("bblue"));
+
             current.setText(Name);
-            current.setTextColor(Color.parseColor(c.getString(c.getColumnIndexOrThrow("textcolor"))));
-            current.setBackgroundColor(Color.parseColor(c.getString(c.getColumnIndexOrThrow("bgcolor"))));
+            current.setTextColor(Color.rgb(Tred, Tgreen, Tblue));
+            current.setBackgroundColor(Color.rgb(Bred, Bgreen, Bblue));
+            c.close();
         }
         db.close();
     }
@@ -125,11 +154,13 @@ public class FDOptions extends Activity {
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Return for Background Color
-        String color;
         db.open();
 
         if (requestCode == 1 && resultCode == RESULT_OK) {
-            color = data.getStringExtra("selectedColor");
+            color[0] = data.getIntExtra("red", 0);
+            color[1] = data.getIntExtra("green", 0);
+            color[2] = data.getIntExtra("blue", 0);
+
             if (facedDeck) {
                 // Save new color to FACEDDECKS
                 db.updateBGColor(position, color, "FACEDDECKS");
@@ -141,7 +172,10 @@ public class FDOptions extends Activity {
 
         // Return for Text Color
         if (requestCode == 2 && resultCode == RESULT_OK) {
-            color = data.getStringExtra("selectedColor");
+            color[0] = data.getIntExtra("red", 0);
+            color[1] = data.getIntExtra("green", 0);
+            color[2] = data.getIntExtra("blue", 0);
+
             if (facedDeck) {
                 // Save new color to FACEDDECKS
                 db.updateTextColor(position, color, "FACEDDECKS");
@@ -167,6 +201,8 @@ public class FDOptions extends Activity {
         final View container = li.inflate(R.layout.popup_delete_face_past_win_loss, (ViewGroup) findViewById(R.id.PURL));
         Configuration configuration = this.getResources().getConfiguration();
         int screenWidthDp = configuration.screenWidthDp;
+        Toast.makeText(getApplicationContext(), Integer.toString(configuration.screenWidthDp), Toast.LENGTH_SHORT).show();
+
         PopupWindow pWtest;
 
         // Will be used to convert pixels size to dps for popup window.
@@ -204,18 +240,35 @@ public class FDOptions extends Activity {
         final PopupWindow pW = pWtest;
         pW.showAtLocation(findViewById(R.id.FDORel), Gravity.CENTER, 0, 0);
 
-        Button Yes = (Button) container.findViewById(R.id.btn_DeleteWinLossYes);
-        Button No = (Button) container.findViewById(R.id.btn_DeleteWinLossCancel);
+        Button Yes = container.findViewById(R.id.btn_DeleteWinLossYes);
+        Button No =  container.findViewById(R.id.btn_DeleteWinLossCancel);
 
         // Listener Events
         Yes.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 db.open();
 
+                // If it is a facedDeck.
                 if (facedDeck) {
-                    db.updateWins(userPosition, 0, userDeckName);
-                    db.updateLoses(userPosition, 0, userDeckName);
-                    db.updateWinRate(50, userPosition);
+                    // Change the wins and losses.
+                    db.updateWins(position, 0, '[' + userDeckName + ']');
+                    db.updateLoses(position, 0, '[' + userDeckName + ']');
+
+                    // Update the userDecks winrate.
+                    Cursor cFacedDecks = db.getAllRows('[' + userDeckName + ']', 2);
+                    cFacedDecks.moveToFirst();
+                    double wins = 0;
+                    double losses = 0;
+
+                    for (int x = 0; x < cFacedDecks.getCount(); x++) {
+                        wins += cFacedDecks.getInt(cFacedDecks.getColumnIndexOrThrow("wins"));
+                        losses += cFacedDecks.getInt(cFacedDecks.getColumnIndexOrThrow("losses"));
+                        cFacedDecks.moveToNext();
+                    }
+                    cFacedDecks.close();
+                    db.updateWinRate((int) Math.round(wins / (wins + losses) * 100), userPosition);
+
+                    // Else it is a user deck.
                 } else {
                     // Change the wins and losses in the win rate table.
                     Cursor winRateCursor = db.getAllRows('[' + userDeckName + ']', 2);
@@ -226,7 +279,7 @@ public class FDOptions extends Activity {
                     }
 
                     // Change the winrate in USERDECKS
-                    db.updateWinRate(0, userPosition);
+                    db.updateWinRate(50, userPosition);
                 }
                 db.close();
                 pW.dismiss();
@@ -290,8 +343,8 @@ public class FDOptions extends Activity {
         final PopupWindow pW = pWtest;
         pW.showAtLocation(findViewById(R.id.FDORel), Gravity.CENTER, 0, 0);
 
-        Button Yes = (Button) container.findViewById(R.id.btn_DeleteFacedDeckYes);
-        Button No = (Button) container.findViewById(R.id.btn_DeleteFacedDeckNo);
+        Button Yes = container.findViewById(R.id.btn_DeleteFacedDeckYes);
+        Button No = container.findViewById(R.id.btn_DeleteFacedDeckNo);
 
         // Listener Events
         Yes.setOnClickListener(new View.OnClickListener() {

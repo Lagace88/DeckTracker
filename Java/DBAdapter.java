@@ -11,24 +11,30 @@ public class DBAdapter {
 
 	private static final String TAG = "DBAdapter"; //used for logging database version changes
 			
-	// Field Names for userdecks
+	// Field Names
 	public static final String KEY_DECKID = "_id";
 	public static final String KEY_NAME = "name";
-	public static final String KEY_TEXTCOLOR = "textcolor";
-	public static final String KEY_BGCOLOR = "bgcolor";
+	public static final String KEY_TRED = "tred";
+	public static final String KEY_TGREEN = "tgreen";
+	public static final String KEY_TBLUE = "tblue";
+	public static final String KEY_BRED = "bred";
+	public static final String KEY_BGREEN = "bgreen";
+	public static final String KEY_BBLUE = "bblue";
 	public static final String KEY_WINS = "wins";
 	public static final String KEY_LOSES = "losses";
 	public static final String KEY_WINRATE = "winrate";
 	
-	public static final String[] USERDECK_KEYS = new String[] {KEY_DECKID, KEY_NAME, KEY_TEXTCOLOR, KEY_BGCOLOR, KEY_WINRATE};
-	public static final String[] FACEDDECK_KEYS = new String[] {KEY_DECKID, KEY_NAME, KEY_TEXTCOLOR, KEY_BGCOLOR};
+	public static final String[] USERDECK_KEYS = new String[] {KEY_DECKID, KEY_NAME, KEY_TRED, KEY_TGREEN, KEY_TBLUE,
+			KEY_BRED, KEY_BGREEN, KEY_BBLUE, KEY_WINRATE};
+	public static final String[] FACEDDECK_KEYS = new String[] {KEY_DECKID, KEY_NAME, KEY_TRED, KEY_TGREEN, KEY_TBLUE,
+			KEY_BRED, KEY_BGREEN, KEY_BBLUE};
 	public static final String[] WIN_LOSS_KEYS = new String[] {KEY_DECKID, KEY_WINS, KEY_LOSES};
 	public static final String[] RECOMMENDED_KEYS = new String[] {"_id", "deck"};
 
 	// DataBase info:
 	public static final String DATABASE_NAME = "decks";
 	public static final String DATABASE_TABLE_USERDECKS = "USERDECKS";
-	public static final int DATABASE_VERSION = 5; // The version number must be incremented each time a change to DB structure occurs.
+	public static final int DATABASE_VERSION = 1; // The version number must be incremented each time a change to DB structure occurs.
 	
 	private final Context context;
 	private DatabaseHelper myDBHelper;
@@ -53,15 +59,15 @@ public class DBAdapter {
 
 	// Combine info from FACEDDECKS and selected table.
 	public Cursor combine(String table) {
-		Cursor c = db.rawQuery("SELECT FACEDDECKS._id, FACEDDECKS.name, FACEDDECKS.textcolor, " +
-				"FACEDDECKS.bgcolor, " + table + ".wins, " + table + ".losses FROM FACEDDECKS JOIN " + table + " " +
+		Cursor c = db.rawQuery("SELECT FACEDDECKS._id, FACEDDECKS.name, FACEDDECKS.tred, FACEDDECKS.tgreen, FACEDDECKS.tblue, " +
+				"FACEDDECKS.bred, FACEDDECKS.bgreen, FACEDDECKS.bblue, " + table + ".wins, " + table + ".losses FROM FACEDDECKS JOIN " + table + " " +
 				"ON FACEDDECKS._id = " + table + "._id", null);
 		c.moveToFirst();
 		return c;
 	}
 
 	// Add a new set of values to be inserted into the database.
-	public void insertRow(String name, String textcolor, String bgcolor, int winRate, String table, int deck, int tableType) {
+	public void insertRow(String name, int[] tColor, int[] bColor, int winRate, String table, int deck, int tableType) {
 		// tableType 0 = User
 		// 			 1 = Faced
 		//			 2 = Win/Loss
@@ -70,16 +76,24 @@ public class DBAdapter {
 		if (tableType == 0) {
 			ContentValues initialValues = new ContentValues();
 			initialValues.put("name", name);
-			initialValues.put("textcolor", textcolor);
-			initialValues.put("bgcolor", bgcolor);
+			initialValues.put("tred", tColor[0]);
+			initialValues.put("tgreen", tColor[1]);
+			initialValues.put("tblue", tColor[2]);
+			initialValues.put("bred", bColor[0]);
+			initialValues.put("bgreen", bColor[1]);
+			initialValues.put("bblue", bColor[2]);
 			initialValues.put("winrate", winRate);
 
 			db.insert(table, null, initialValues);
 		}else if (tableType == 1) {
 			ContentValues initialValues = new ContentValues();
 			initialValues.put("name", name);
-			initialValues.put("textcolor", textcolor);
-			initialValues.put("bgcolor", bgcolor);
+			initialValues.put("tred", tColor[0]);
+			initialValues.put("tgreen", tColor[1]);
+			initialValues.put("tblue", tColor[2]);
+			initialValues.put("bred", bColor[0]);
+			initialValues.put("bgreen", bColor[1]);
+			initialValues.put("bblue", bColor[2]);
 
 			db.insert(table, null, initialValues);
 		}else if (tableType == 2) {
@@ -103,11 +117,12 @@ public class DBAdapter {
 	}
 
 	// Return all data in the database.
-	public  Cursor getAllRows(String table, int TableType) {
+	public Cursor getAllRows(String table, int TableType) {
 		// 0 == USEERDECK
 		// 1 == FACEDDECK
 		// 2 == WIN/Loss
 		// 3 == RECOMMENDED
+
 		Cursor c;
 		if (TableType == 0) {
 			c = db.query(true, table, USERDECK_KEYS, null, null, null, null, null, null);
@@ -144,7 +159,7 @@ public class DBAdapter {
 		// 			2 = Win/loss deck
 
 		String where = "";
-		Cursor c = null;
+		Cursor c;
 
 		if (DeckType == 0) {
 			where = KEY_DECKID + "=" + rowId;
@@ -182,19 +197,23 @@ public class DBAdapter {
 		return db.update(table, newValues, where, null) != 0;
 	}
 
-	public boolean updateTextColor(long rowId, String textColor, String table) {
+	public boolean updateTextColor(long rowId, int[] tColor, String table) {
 		String where = KEY_DECKID + "=" + rowId;
 		ContentValues newValues = new ContentValues();
-		newValues.put(KEY_TEXTCOLOR, textColor);
+		newValues.put("tred", tColor[0]);
+		newValues.put("tgreen", tColor[1]);
+		newValues.put("tblue", tColor[2]);
 
 		// Insert it to db
 		return db.update(table, newValues, where, null) != 0;
 	}
 
-	public boolean updateBGColor(long rowId, String bgColor, String table) {
+	public boolean updateBGColor(long rowId, int[] bColor, String table) {
 		String where = KEY_DECKID + "=" + rowId;
 		ContentValues newValues = new ContentValues();
-		newValues.put(KEY_BGCOLOR, bgColor);
+		newValues.put("bred", bColor[0]);
+		newValues.put("bgreen", bColor[1]);
+		newValues.put("bblue", bColor[2]);
 
 		// Insert into db
 		return db.update(table, newValues, where, null) != 0;
@@ -280,8 +299,12 @@ public class DBAdapter {
 					"CREATE TABLE IF NOT EXISTS " + tableName
 							+ " (_id INTEGER PRIMARY KEY AUTOINCREMENT, "
 							+ "name TEXT,"
-							+ "textcolor TEXT,"
-							+ "bgcolor TEXT"
+							+ "tred INTEGER,"
+							+ "tgreen INTEGER,"
+							+ "tblue INTEGER,"
+							+ "bred INTEGER,"
+							+ "bgreen INTEGER,"
+							+ "bblue INTEGER,"
 							+ "winrate INTEGER"
 							+ ");";
 			db.execSQL(createTable);
@@ -290,8 +313,12 @@ public class DBAdapter {
 					"CREATE TABLE IF NOT EXISTS " + tableName
 							+ " (_id INTEGER PRIMARY KEY AUTOINCREMENT, "
 							+ "name TEXT,"
-							+ "textcolor TEXT,"
-							+ "bgcolor TEXT"
+							+ "tred INTEGER,"
+							+ "tgreen INTEGER,"
+							+ "tblue INTEGER,"
+							+ "bred INTEGER,"
+							+ "bgreen INTEGER,"
+							+ "bblue INTEGER"
 							+ ");";
 			db.execSQL(createTable);
 		}else if (tableType == 2){
@@ -325,8 +352,12 @@ public class DBAdapter {
 					"CREATE TABLE " + DATABASE_TABLE_USERDECKS
 							+ " (" + KEY_DECKID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
 							+ KEY_NAME + " TEXT,"
-							+ KEY_TEXTCOLOR + " TEXT,"
-							+ KEY_BGCOLOR + " TEXT,"
+							+ "tred INTEGER,"
+							+ "tgreen INTEGER,"
+							+ "tblue INTEGER,"
+							+ "bred INTEGER,"
+							+ "bgreen INTEGER,"
+							+ "bblue INTEGER,"
 							+ KEY_WINRATE + " INTEGER"
 							+ ");";
 			_db.execSQL(DATABASE_CREATE_SQL);

@@ -25,13 +25,13 @@ public class ChangeName extends Activity {
         db = new DBAdapter(this);
 
         // Declare Buttons
-        Button done = (Button) findViewById(R.id.btn_CNDone);
-        Button cancel = (Button) findViewById(R.id.btn_CNCancel);
+        Button done = findViewById(R.id.btn_CNDone);
+        Button cancel = findViewById(R.id.btn_CNCancel);
 
         done.setOnClickListener(toggleDone);
         cancel.setOnClickListener(toggleCancel);
 
-        EditText deckName = (EditText) findViewById(R.id.editNewName);
+        EditText deckName = findViewById(R.id.editNewName);
 
         position = getIntent().getIntExtra("Position", 0);
         userPosition = getIntent().getIntExtra("UserPosition", 0);
@@ -61,7 +61,7 @@ public class ChangeName extends Activity {
             new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    EditText newName = (EditText) findViewById(R.id.editNewName);
+                    EditText newName = findViewById(R.id.editNewName);
                     String Name = newName.getText().toString();
                     db.open();
 
@@ -96,7 +96,7 @@ public class ChangeName extends Activity {
                         }
 
                         // Save to appropriate table.
-                        if (facedDeck == true) {
+                        if (facedDeck) {
                             // Update FACEDDECKS
                             db.updateName(position, Name, "FACEDDECKS");
                             db.close();

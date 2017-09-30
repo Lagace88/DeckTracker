@@ -6,21 +6,18 @@ import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
-import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class AddDeck extends Activity {
     boolean UserDeck;
     boolean TextColorChange = false;
     boolean BackgroundColorChange = false;
-    String TextColorCode;
-    String BackgroundColorCode;
+    int[] TextColorCode = new int[3];
+    int[] BackgroundColorCode = new int[3];
     DBAdapter db;
 
     @Override
@@ -32,8 +29,8 @@ public class AddDeck extends Activity {
         UserDeck = getIntent().getBooleanExtra("USERDECK", true);
 
         // Declare Image Buttons
-        ImageView BackgroundColor = (ImageView) findViewById(R.id.imgBackgroundColor);
-        ImageView TextColor = (ImageView) findViewById(R.id.imgTextColor);
+        ImageView BackgroundColor = findViewById(R.id.imgBackgroundColor);
+        ImageView TextColor = findViewById(R.id.imgTextColor);
 
         // Declare Buttons
         Button Done = findViewById(R.id.btnDone);
@@ -48,7 +45,7 @@ public class AddDeck extends Activity {
         Back.setOnClickListener(toggleBack);
 
         // EditText
-        EditText deckName = (EditText) findViewById(R.id.etextDeckName);
+        EditText deckName = findViewById(R.id.etextDeckName);
 
         //Database
         db = new DBAdapter(this);
@@ -82,7 +79,7 @@ public class AddDeck extends Activity {
                     int duration = Toast.LENGTH_LONG;
                     Toast toast;
 
-                    EditText DeckName = (EditText) findViewById(R.id.etextDeckName);
+                    EditText DeckName = findViewById(R.id.etextDeckName);
 
                     // Make Sure all Fields are Filled Out
                     String Name = DeckName.getText().toString();
@@ -122,7 +119,6 @@ public class AddDeck extends Activity {
                         }
 
                         Cursor cursor = db.getAllRows("USERDECKS", 0);
-                        cursor.moveToFirst();
 
                         // Flag to see if name is being used
                         boolean nameUsed = false;
@@ -134,7 +130,7 @@ public class AddDeck extends Activity {
                             cursor.moveToNext();
                         }
 
-                        if (nameUsed == false) {
+                        if (!nameUsed) {
                             db.insertRow(Name, TextColorCode, BackgroundColorCode, 50, "USERDECKS", 0, 0);
 
                             // Create table if it does not exist for win/loss
@@ -147,10 +143,17 @@ public class AddDeck extends Activity {
                             Cursor c = db.getAllRows("FACEDDECKS", 1);
 
                             for (int x = 0; x < c.getCount(); x++) {
-                                db.insertRow(c.getString(c.getColumnIndexOrThrow("name")),
-                                        "", "", 0, "[" +Name + "]", 0,  2);
+                                db.insertRow(c.getString(c.getColumnIndexOrThrow("name")), TextColorCode, BackgroundColorCode,
+                                        0, "[" + Name + "]", 0,  2);
                             }
                             c.close();
+
+                            // Updater the ID
+                            cursor = db.getAllRows("USERDECKS", 0);
+                            cursor.moveToLast();
+
+                            db.updateID(cursor.getInt(cursor.getColumnIndexOrThrow("_id")), cursor.getCount(), "USERDECKS");
+
                             cursor.close();
                             finish();
                         }else {
@@ -178,7 +181,6 @@ public class AddDeck extends Activity {
                         }
 
                         Cursor cursor = db.getAllRows("FACEDDECKS", 1);
-                        cursor.moveToFirst();
 
                        // Flag to see if name is being used
                         boolean nameUsed = false;
@@ -190,7 +192,7 @@ public class AddDeck extends Activity {
                             cursor.moveToNext();
                         }
 
-                        if (nameUsed == false) {
+                        if (!nameUsed) {
                             // Adds to FACEDDECKS
                             db.insertRow(Name, TextColorCode, BackgroundColorCode, 0, "FACEDDECKS", 0,  1);
 
@@ -206,8 +208,8 @@ public class AddDeck extends Activity {
                             Cursor currentTable;
 
                             for (int x = 0; x < c.getCount(); x++) {
-                                db.insertRow(Name, "", "", 0, "[" +
-                                        c.getString(c.getColumnIndexOrThrow("name")) + "]", 0,  2);
+                                db.insertRow(Name, TextColorCode, BackgroundColorCode, 0,
+                                        "[" + c.getString(c.getColumnIndexOrThrow("name")) + "]", 0,  2);
 
                                 // Update _id.
                                 currentTable = db.getAllRows("[" + c.getString(c.getColumnIndexOrThrow("name")) + "]", 2);
@@ -242,7 +244,7 @@ public class AddDeck extends Activity {
             new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent x = new Intent(getApplicationContext(), ColorSelection.class);
+                    Intent x = new Intent(getApplicationContext(), CreateColor.class);
                     startActivityForResult(x, 1);
 
                 }
@@ -252,7 +254,7 @@ public class AddDeck extends Activity {
             new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent x = new Intent(getApplicationContext(), ColorSelection.class);
+                    Intent x = new Intent(getApplicationContext(), CreateColor.class);
                     startActivityForResult(x, 2);
                 }
             };
@@ -260,17 +262,23 @@ public class AddDeck extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Return for Background Color
         if (requestCode == 1 && resultCode == RESULT_OK) {
-            BackgroundColorCode = data.getStringExtra("selectedColor");
-            ImageView BackgroundColor = (ImageView) findViewById(R.id.imgBackgroundColor);
-            BackgroundColor.setBackgroundColor(Color.parseColor(BackgroundColorCode));
+            BackgroundColorCode[0] = data.getIntExtra("red", 0);
+            BackgroundColorCode[1] = data.getIntExtra("green", 0);
+            BackgroundColorCode[2] = data.getIntExtra("blue", 0);
+
+            ImageView BackgroundColor = findViewById(R.id.imgBackgroundColor);
+            BackgroundColor.setBackgroundColor(Color.rgb(BackgroundColorCode[0], BackgroundColorCode[1], BackgroundColorCode[2]));
             BackgroundColorChange = true;
         }
 
         // Return for Text Color
         if (requestCode == 2 && resultCode == RESULT_OK) {
-            TextColorCode = data.getStringExtra("selectedColor");
-            ImageView TextColor = (ImageView) findViewById(R.id.imgTextColor);
-            TextColor.setBackgroundColor(Color.parseColor(TextColorCode));
+            TextColorCode[0] = data.getIntExtra("red", 0);
+            TextColorCode[1] = data.getIntExtra("green", 0);
+            TextColorCode[2] = data.getIntExtra("blue", 0);
+
+            ImageView TextColor = findViewById(R.id.imgTextColor);
+            TextColor.setBackgroundColor(Color.rgb(TextColorCode[0], TextColorCode[1], TextColorCode[2]));
             TextColorChange = true;
         }
     }

@@ -26,13 +26,17 @@ public class ListViewCustomAdapterFacedDecks extends CursorAdapter {
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        TextView facedDeckName = (TextView) view.findViewById(R.id.txtFacedDeckName);
-        TextView winRate = (TextView) view.findViewById(R.id.txtWinRate);
+        TextView facedDeckName = view.findViewById(R.id.txtFacedDeckName);
+        TextView winRate = view.findViewById(R.id.txtWinRate);
 
         // Info from cursor
         String Name = cursor.getString(cursor.getColumnIndexOrThrow("name"));
-        String TextColor = cursor.getString(cursor.getColumnIndexOrThrow("textcolor"));
-        String BGColor = cursor.getString(cursor.getColumnIndexOrThrow("bgcolor"));
+        int Tred = cursor.getInt(cursor.getColumnIndexOrThrow("tred"));
+        int Tgreen = cursor.getInt(cursor.getColumnIndexOrThrow("tgreen"));
+        int Tblue = cursor.getInt(cursor.getColumnIndexOrThrow("tblue"));
+        int Bred = cursor.getInt(cursor.getColumnIndexOrThrow("bred"));
+        int Bgreen = cursor.getInt(cursor.getColumnIndexOrThrow("bgreen"));
+        int Bblue = cursor.getInt(cursor.getColumnIndexOrThrow("bblue"));
         double Wins = cursor.getInt(cursor.getColumnIndexOrThrow("wins"));
         double Losses = cursor.getInt(cursor.getColumnIndexOrThrow("losses"));
         double WinRate;
@@ -48,12 +52,12 @@ public class ListViewCustomAdapterFacedDecks extends CursorAdapter {
         facedDeckName.setText(Name);
 
 
-        facedDeckName.setTextColor(Color.parseColor(TextColor));
-        facedDeckName.setBackgroundColor(Color.parseColor(BGColor));
+        facedDeckName.setTextColor(Color.rgb(Tred, Tgreen, Tblue));
+        facedDeckName.setBackgroundColor(Color.rgb(Bred, Bgreen, Bblue));
 
         winRate.setText(String.format("%.0f", WinRate) + "%");
-        winRate.setTextColor(Color.parseColor(TextColor));
-        winRate.setBackgroundColor(Color.parseColor(BGColor));
+        winRate.setTextColor(Color.rgb(Tred, Tgreen, Tblue));
+        winRate.setBackgroundColor(Color.rgb(Bred, Bgreen, Bblue));
     }
 }
 

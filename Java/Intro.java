@@ -15,9 +15,9 @@ public class Intro extends Activity {
         setContentView(R.layout.activity_intro);
 
         // Declare Buttons
-        Button Start = (Button) findViewById(R.id.btnStart);
-        Button Options = (Button) findViewById(R.id.btnOptions);
-        Button Exit = (Button) findViewById(R.id.btnExit);
+        Button Start = findViewById(R.id.btnStart);
+        Button Options = findViewById(R.id.btnOptions);
+        Button Exit = findViewById(R.id.btnExit);
 
         // Listener Events for Buttons
         Start.setOnClickListener(toggleStart);
@@ -38,6 +38,7 @@ public class Intro extends Activity {
                 public void onClick(View v) {
                     // Create FACEDDECKS and RECOMMENDED Table if it does not exist yet]
                     db.open();
+                    db.createTable("USERDECKS", 0);
                     db.createTable("FACEDDECKS", 1);
                     db.createTable("RECOMMENDED", 3);
                     db.close();

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -26,15 +27,15 @@ public class UserDeckDisplay extends Activity {
         setContentView(R.layout.activity_user_deck_display);
 
         // Declare Buttons
-        Button AddDeck = (Button) findViewById(R.id.btnAddDeck);
-        Button Back = (Button) findViewById(R.id.btnBack);
+        Button AddDeck = findViewById(R.id.btnAddDeck);
+        Button Back = findViewById(R.id.btnBack);
 
         // Listener Events for Buttons
         AddDeck.setOnClickListener(toggleAddDeck);
         Back.setOnClickListener(toggleBack);
 
         // Populate Deck List
-        decks = (ListView) findViewById(R.id.decks);
+        decks = findViewById(R.id.decks);
         db = new DBAdapter(this);
         populateListView();
 
@@ -78,7 +79,7 @@ public class UserDeckDisplay extends Activity {
         adapter = new ListViewCustomAdapterUserDecks(this, cursor, this.getResources().getConfiguration());
         decks.setAdapter(adapter);
 
-        TextView recommendedText = (TextView) findViewById(R.id.txt_RecomendedDeck);
+        TextView recommendedText = findViewById(R.id.txt_RecomendedDeck);
 
         // Create Recommended table if it does not exist and see if any decks have been played.
         db.createTable("RECOMMENDED", 3);
@@ -163,8 +164,17 @@ public class UserDeckDisplay extends Activity {
             userDeckCursor.moveToPosition(recommendedDeck);
             String Name = userDeckCursor.getString(userDeckCursor.getColumnIndexOrThrow("name"));
             recommendedText.setText(Name);
-            recommendedText.setTextColor(parseColor(userDeckCursor.getString(userDeckCursor.getColumnIndexOrThrow("textcolor"))));
-            recommendedText.setBackgroundColor(parseColor(userDeckCursor.getString(userDeckCursor.getColumnIndexOrThrow("bgcolor"))));
+
+            int Tred = userDeckCursor.getInt(userDeckCursor.getColumnIndexOrThrow("tred"));
+            int Tgreen = userDeckCursor.getInt(userDeckCursor.getColumnIndexOrThrow("tgreen"));
+            int Tblue = userDeckCursor.getInt(userDeckCursor.getColumnIndexOrThrow("tblue"));
+
+            int Bred = userDeckCursor.getInt(userDeckCursor.getColumnIndexOrThrow("bred"));
+            int Bgreen = userDeckCursor.getInt(userDeckCursor.getColumnIndexOrThrow("bgreen"));
+            int Bblue = userDeckCursor.getInt(userDeckCursor.getColumnIndexOrThrow("bblue"));
+
+            recommendedText.setTextColor(Color.rgb(Tred, Tgreen, Tblue));
+            recommendedText.setBackgroundColor(Color.rgb(Bred, Bgreen, Bblue));
             userDeckCursor.close();
         }
 

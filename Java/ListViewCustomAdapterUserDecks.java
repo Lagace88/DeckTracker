@@ -31,19 +31,23 @@ public class ListViewCustomAdapterUserDecks extends CursorAdapter {
 
         // Info from cursor
         String Name = cursor.getString(cursor.getColumnIndexOrThrow("name"));
-        String TextColorCode = cursor.getString(cursor.getColumnIndexOrThrow("textcolor"));
-        String BGColorCode = cursor.getString(cursor.getColumnIndexOrThrow("bgcolor"));
+        int Tred = cursor.getInt(cursor.getColumnIndexOrThrow("tred"));
+        int Tgreen = cursor.getInt(cursor.getColumnIndexOrThrow("tgreen"));
+        int Tblue = cursor.getInt(cursor.getColumnIndexOrThrow("tblue"));
+        int Bred = cursor.getInt(cursor.getColumnIndexOrThrow("bred"));
+        int Bgreen = cursor.getInt(cursor.getColumnIndexOrThrow("bgreen"));
+        int Bblue = cursor.getInt(cursor.getColumnIndexOrThrow("bblue"));
 
         // Info for win rate.
         int winRate = cursor.getInt(cursor.getColumnIndexOrThrow("winrate"));
 
         // Change Properties
         txt_UserDeck.setText(Name);
-        txt_UserDeck.setTextColor(Color.parseColor(TextColorCode));
-        txt_UserDeck.setBackgroundColor(Color.parseColor(BGColorCode));
+        txt_UserDeck.setTextColor(Color.rgb(Tred, Tgreen, Tblue));
+        txt_UserDeck.setBackgroundColor(Color.rgb(Bred, Bgreen, Bblue));
 
-        txt_UserDeckWinRate.setTextColor(Color.parseColor(TextColorCode));
-        txt_UserDeckWinRate.setBackgroundColor(Color.parseColor(BGColorCode));
+        txt_UserDeckWinRate.setTextColor(Color.rgb(Tred, Tgreen, Tblue));
+        txt_UserDeckWinRate.setBackgroundColor(Color.rgb(Bred, Bgreen, Bblue));
         txt_UserDeckWinRate.setText(winRate + "%");
     }
 }

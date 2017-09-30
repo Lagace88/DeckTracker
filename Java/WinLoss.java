@@ -2,15 +2,12 @@ package com.tool.dirtytgaming.decktrackerpro;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class WinLoss extends Activity {
     DBAdapter db;
@@ -38,7 +35,6 @@ public class WinLoss extends Activity {
 
         // Populate Current Deck
         UserDeck = getIntent().getStringExtra("UserDeckName");
-        Toast.makeText(WinLoss.this, UserDeck, Toast.LENGTH_SHORT).show();
         Position = getIntent().getIntExtra("Position", 0);
         UserPosition = getIntent().getIntExtra("UserPosition", 0);
         db = new DBAdapter(this);
@@ -48,7 +44,7 @@ public class WinLoss extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-      //  populate();
+        populate();
     }
 
     public void populate() {
@@ -66,10 +62,18 @@ public class WinLoss extends Activity {
         Cursor cOne = db.getRow(Position, "FACEDDECKS", 1);
 
         String Name = cOne.getString(cOne.getColumnIndexOrThrow("name"));
-        DisplayDeckName.setText(Name);
-        DisplayDeckName.setTextColor(Color.parseColor(cOne.getString(cOne.getColumnIndexOrThrow("textcolor"))));
-        DisplayDeckName.setBackgroundColor(Color.parseColor(cOne.getString(cOne.getColumnIndexOrThrow("bgcolor"))));
 
+        int Tred = cOne.getInt(cOne.getColumnIndexOrThrow("tred"));
+        int Tgreen = cOne.getInt(cOne.getColumnIndexOrThrow("tgreen"));
+        int Tblue = cOne.getInt(cOne.getColumnIndexOrThrow("tblue"));
+
+        int Bred = cOne.getInt(cOne.getColumnIndexOrThrow("bred"));
+        int Bgreen = cOne.getInt(cOne.getColumnIndexOrThrow("bgreen"));
+        int Bblue = cOne.getInt(cOne.getColumnIndexOrThrow("bblue"));
+
+        DisplayDeckName.setText(Name);
+        DisplayDeckName.setTextColor(Color.rgb(Tred, Tgreen, Tblue));
+        DisplayDeckName.setBackgroundColor(Color.rgb(Bred, Bgreen, Bblue));
 
         Cursor cTwo = db.getRow(Position, '[' + UserDeck + ']', 2);
         db.close();

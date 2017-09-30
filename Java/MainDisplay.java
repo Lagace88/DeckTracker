@@ -2,17 +2,13 @@ package com.tool.dirtytgaming.decktrackerpro;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.TypedValue;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 public class MainDisplay extends Activity {
     // Globals
@@ -28,9 +24,9 @@ public class MainDisplay extends Activity {
         setContentView(R.layout.activity_main_display);
 
         // Declare Buttons
-        Button AddDeck = (Button) findViewById(R.id.btnAddDeck);
-        Button Back = (Button) findViewById(R.id.btnBack);
-        Button Options = (Button) findViewById(R.id.btnUserDeckOptions);
+        Button AddDeck = findViewById(R.id.btnAddDeck);
+        Button Back = findViewById(R.id.btnBack);
+        Button Options = findViewById(R.id.btnUserDeckOptions);
 
         // Listener Events for Buttons
         AddDeck.setOnClickListener(toggleAddDeck);
@@ -81,25 +77,30 @@ public class MainDisplay extends Activity {
         adapter = new ListViewCustomAdapterFacedDecks(this, cursor, this.getResources().getConfiguration());
         FacedDecks.setAdapter(adapter);
 
-        TextView Current = (TextView) findViewById(R.id.txtCurrentDeck);
-        TextView CurrentWinRate = (TextView) findViewById(R.id.txt_CurrentDeckWinRate);
+        AutoResizeTextView Current = findViewById(R.id.txtCurrentDeck);
+        AutoResizeTextView CurrentWinRate = findViewById(R.id.txt_CurrentDeckWinRate);
 
         db.open();
         Cursor c = db.getRow(UserPosition, "USERDECKS", 0);
         db.close();
 
         String Name = c.getString(c.getColumnIndexOrThrow("name"));
-        Current.setText(Name);
-        Current.setTextColor(Color.parseColor(c.getString(c.getColumnIndexOrThrow("textcolor"))));
-        Current.setBackgroundColor(Color.parseColor(c.getString(c.getColumnIndexOrThrow("bgcolor"))));
 
-        // Set Text for Current
-        Configuration configuration = this.getResources().getConfiguration();
-        int screenWidthDp = configuration.screenWidthDp;
+        int Tred = c.getInt(c.getColumnIndexOrThrow("tred"));
+        int Tgreen = c.getInt(c.getColumnIndexOrThrow("tgreen"));
+        int Tblue = c.getInt(c.getColumnIndexOrThrow("tblue"));
+
+        int Bred = c.getInt(c.getColumnIndexOrThrow("bred"));
+        int Bgreen = c.getInt(c.getColumnIndexOrThrow("bgreen"));
+        int Bblue = c.getInt(c.getColumnIndexOrThrow("bblue"));
+
+        Current.setText(Name);
+        Current.setTextColor(Color.rgb(Tred, Tgreen, Tblue));
+        Current.setBackgroundColor(Color.rgb(Bred, Bgreen, Bblue));
 
         CurrentWinRate.setText(c.getInt(c.getColumnIndexOrThrow("winrate")) + "%");
-        CurrentWinRate.setTextColor(Color.parseColor(c.getString(c.getColumnIndexOrThrow("textcolor"))));
-        CurrentWinRate.setBackgroundColor(Color.parseColor(c.getString(c.getColumnIndexOrThrow("bgcolor"))));
+        CurrentWinRate.setTextColor(Color.rgb(Tred, Tgreen, Tblue));
+        CurrentWinRate.setBackgroundColor(Color.rgb(Bred, Bgreen, Bblue));
         db.close();
     }
 

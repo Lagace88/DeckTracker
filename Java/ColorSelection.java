@@ -8,7 +8,7 @@ import android.widget.ImageButton;
 
 public class ColorSelection extends Activity {
     // Global
-    String Color;
+    int[] Color = new int[3];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,18 +16,18 @@ public class ColorSelection extends Activity {
         setContentView(R.layout.activity_color_selection);
 
         // Declare Image Buttons
-        ImageButton Black = (ImageButton) findViewById(R.id.ibBlack);
-        ImageButton Green = (ImageButton) findViewById(R.id.ibGreen);
-        ImageButton Red = (ImageButton) findViewById(R.id.ibRed);
-        ImageButton Purple = (ImageButton) findViewById(R.id.ibPurple);
-        ImageButton Blue = (ImageButton) findViewById(R.id.ibBlue);
-        ImageButton Yellow = (ImageButton) findViewById(R.id.ibYellow);
-        ImageButton Cyan = (ImageButton) findViewById(R.id.ibCyan);
-        ImageButton Orange = (ImageButton) findViewById(R.id.ibOrange);
-        ImageButton Pink = (ImageButton) findViewById(R.id.ibPink);
+        ImageButton Brown = findViewById(R.id.ibBlack);
+        ImageButton Green = findViewById(R.id.ibGreen);
+        ImageButton Red = findViewById(R.id.ibRed);
+        ImageButton Purple = findViewById(R.id.ibPurple);
+        ImageButton Blue = findViewById(R.id.ibBlue);
+        ImageButton Yellow = findViewById(R.id.ibYellow);
+        ImageButton Cyan = findViewById(R.id.ibCyan);
+        ImageButton Orange = findViewById(R.id.ibOrange);
+        ImageButton Pink = findViewById(R.id.ibPink);
 
         // Declare Image Button Listeners
-        Black.setOnClickListener(toggleBlack);
+        Brown.setOnClickListener(toggleBrown);
         Green.setOnClickListener(toggleGreen);
         Red.setOnClickListener(toggleRed);
         Purple.setOnClickListener(togglePurple);
@@ -38,12 +38,14 @@ public class ColorSelection extends Activity {
         Pink.setOnClickListener(togglePink);
     }
 
-    private final View.OnClickListener toggleBlack =
+    private final View.OnClickListener toggleBrown =
             new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Color = "#000000";
-                    sendColorBack(Color);
+                    Color[0] = 121;
+                    Color[1] = 85;
+                    Color[2] = 72;
+                    sendColorBack();
                 }
             };
 
@@ -51,8 +53,10 @@ public class ColorSelection extends Activity {
             new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Color = "#056600";
-                    sendColorBack(Color);
+                    Color[0] = 5;
+                    Color[1] = 102;
+                    Color[2] = 0;
+                    sendColorBack();
                 }
             };
 
@@ -60,8 +64,10 @@ public class ColorSelection extends Activity {
             new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Color = "#a70308";
-                    sendColorBack(Color);
+                    Color[0] = 167;
+                    Color[1] = 3;
+                    Color[2] = 8;
+                    sendColorBack();
                 }
             };
 
@@ -69,8 +75,10 @@ public class ColorSelection extends Activity {
             new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Color = "#a602b2";
-                    sendColorBack(Color);
+                    Color[0] = 166;
+                    Color[1] = 2;
+                    Color[2] = 178;
+                    sendColorBack();
                 }
             };
 
@@ -78,8 +86,10 @@ public class ColorSelection extends Activity {
             new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Color = "#0418ad";
-                    sendColorBack(Color);
+                    Color[0] = 4;
+                    Color[1] = 24;
+                    Color[2] = 173;
+                    sendColorBack();
                 }
             };
 
@@ -87,8 +97,10 @@ public class ColorSelection extends Activity {
             new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Color = "#ece800";
-                    sendColorBack(Color);
+                    Color[0] = 236;
+                    Color[1] = 232;
+                    Color[2] = 0;
+                    sendColorBack();
                 }
             };
 
@@ -96,8 +108,10 @@ public class ColorSelection extends Activity {
             new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Color = "#02b29b";
-                    sendColorBack(Color);
+                    Color[0] = 2;
+                    Color[1] = 178;
+                    Color[2] = 155;
+                    sendColorBack();
                 }
             };
 
@@ -105,8 +119,10 @@ public class ColorSelection extends Activity {
             new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Color = "#f07924";
-                    sendColorBack(Color);
+                    Color[0] = 240;
+                    Color[1] = 121;
+                    Color[2] = 36;
+                    sendColorBack();
                 }
             };
 
@@ -114,14 +130,16 @@ public class ColorSelection extends Activity {
             new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Color = "#fe348c";
-                    sendColorBack(Color);
+                    Color[0] = 254;
+                    Color[1] = 52;
+                    Color[2] = 140;
+                    sendColorBack();
                 }
             };
 
-    void sendColorBack(String Color) {
+    void sendColorBack() {
         Intent data = new Intent();
-        data.putExtra("selectedColor", Color);
+        data.putExtra("Color", Color);
         setResult(RESULT_OK, data);
         finish();
     }
